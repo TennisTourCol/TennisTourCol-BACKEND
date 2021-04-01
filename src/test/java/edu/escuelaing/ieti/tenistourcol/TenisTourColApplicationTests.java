@@ -3,10 +3,8 @@ package edu.escuelaing.ieti.tenistourcol;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
-import edu.escuelaing.ieti.tenistourcol.mapper.TournamentMapper;
 import edu.escuelaing.ieti.tenistourcol.model.ExceptionResponse;
 import edu.escuelaing.ieti.tenistourcol.model.Tournament;
-import edu.escuelaing.ieti.tenistourcol.repository.TournamentEntity;
 import edu.escuelaing.ieti.tenistourcol.repository.TournamentRepository;
 import org.junit.FixMethodOrder;
 import org.junit.jupiter.api.Test;
@@ -25,7 +23,7 @@ import java.math.BigInteger;
 import java.util.Date;
 import java.util.List;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -158,13 +156,7 @@ class TenisTourColApplicationTests {
 	}
 
 	@Test
-	public void T05probarMetodosTournament(){
-		TournamentEntity tournamentEntity = TournamentMapper.map(tournament);
-		tournamentEntity.toString();
-	}
-
-	@Test
-	public void T06torneoPorIdDebeRetornarNull() {
+	public void T05torneoPorIdDebeRetornarNull() {
 		try {
 			this.mockMvc.perform(get("/tournament/"+"54a46s5dsa")
 					//.header("Authorization", token)
