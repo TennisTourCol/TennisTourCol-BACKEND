@@ -5,6 +5,9 @@ import edu.escuelaing.ieti.tenistourcol.repository.TournamentEntity;
 
 public class TournamentMapper {
 
+    private TournamentMapper() {
+    }
+
     public static TournamentEntity map(final Tournament tournament) {
 
         final TournamentEntity tournamentEntity = new TournamentEntity();
