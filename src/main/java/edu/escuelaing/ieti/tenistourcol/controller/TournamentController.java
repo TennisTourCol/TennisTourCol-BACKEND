@@ -1,7 +1,7 @@
-package edu.escuelaing.ieti.TenisTourCol.controller;
+package edu.escuelaing.ieti.tenistourcol.controller;
 
-import edu.escuelaing.ieti.TenisTourCol.model.Tournament;
-import edu.escuelaing.ieti.TenisTourCol.service.TournamentService;
+import edu.escuelaing.ieti.tenistourcol.model.Tournament;
+import edu.escuelaing.ieti.tenistourcol.service.TournamentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;

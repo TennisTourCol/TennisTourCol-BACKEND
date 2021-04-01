@@ -1,6 +1,6 @@
-package edu.escuelaing.ieti.TenisTourCol.service;
+package edu.escuelaing.ieti.tenistourcol.service;
 
-import edu.escuelaing.ieti.TenisTourCol.model.Tournament;
+import edu.escuelaing.ieti.tenistourcol.model.Tournament;
 
 import java.util.List;
 

@@ -1,6 +1,6 @@
-package edu.escuelaing.ieti.TenisTourCol.controller;
+package edu.escuelaing.ieti.tenistourcol.controller;
 
-import edu.escuelaing.ieti.TenisTourCol.model.ExceptionResponse;
+import edu.escuelaing.ieti.tenistourcol.model.ExceptionResponse;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.http.HttpStatus;
@@ -16,9 +16,9 @@ import java.text.MessageFormat;
 import java.util.Date;
 
 @ControllerAdvice
-public class HandlerException {
+public class Handler {
 
-        protected static Logger logger = LogManager.getLogger(HandlerException.class);
+        protected static Logger logger = LogManager.getLogger(Handler.class);
 
         @ExceptionHandler(MethodArgumentNotValidException.class)
         @ResponseStatus(code = HttpStatus.BAD_REQUEST)
@@ -26,14 +26,11 @@ public class HandlerException {
         public ExceptionResponse handleMethodArgumentNotValidException(MethodArgumentNotValidException ex, WebRequest request) {
 
             BindingResult result = ex.getBindingResult();
-            StringBuffer lsb_errors = new StringBuffer();
+            StringBuffer lsbErrors = new StringBuffer();
 
-            result.getFieldErrors().stream().forEach( err -> lsb_errors.append( MessageFormat.format("El campo {0} {1}.", err.getField(), err.getDefaultMessage() ) ) );
+            result.getFieldErrors().stream().forEach( err -> lsbErrors.append( MessageFormat.format("El campo {0} {1}.", err.getField(), err.getDefaultMessage() ) ) );
 
-            String mensaje = lsb_errors.toString();
-
-            if (logger.isDebugEnabled())
-                logger.error( mensaje );
+            String mensaje = lsbErrors.toString();
 
             return new ExceptionResponse(new Date(), 400, "Bad Request", mensaje);
         }

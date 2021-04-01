@@ -1,7 +1,6 @@
-package edu.escuelaing.ieti.TenisTourCol.model;
+package edu.escuelaing.ieti.tenistourcol.model;
 
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 

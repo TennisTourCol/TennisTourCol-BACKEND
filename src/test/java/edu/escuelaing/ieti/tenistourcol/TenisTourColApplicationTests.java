@@ -1,13 +1,13 @@
-package edu.escuelaing.ieti.TenisTourCol;
+package edu.escuelaing.ieti.tenistourcol;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
-import edu.escuelaing.ieti.TenisTourCol.mapper.TournamentMapper;
-import edu.escuelaing.ieti.TenisTourCol.model.ExceptionResponse;
-import edu.escuelaing.ieti.TenisTourCol.model.Tournament;
-import edu.escuelaing.ieti.TenisTourCol.repository.TournamentEntity;
-import edu.escuelaing.ieti.TenisTourCol.repository.TournamentRepository;
+import edu.escuelaing.ieti.tenistourcol.mapper.TournamentMapper;
+import edu.escuelaing.ieti.tenistourcol.model.ExceptionResponse;
+import edu.escuelaing.ieti.tenistourcol.model.Tournament;
+import edu.escuelaing.ieti.tenistourcol.repository.TournamentEntity;
+import edu.escuelaing.ieti.tenistourcol.repository.TournamentRepository;
 import org.junit.FixMethodOrder;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
@@ -173,4 +173,23 @@ class TenisTourColApplicationTests {
 		assertFalse(tournamentEntity.equals(tournamentEntity1));
 	}
 
+	@Test
+	public void T06torneoPorIdDebeRetornarNull() {
+		try {
+			MvcResult result = this.mockMvc.perform(get("/tournament/"+"54a46s5dsa")
+					//.header("Authorization", token)
+					.contentType(MediaType.APPLICATION_JSON)
+			).andExpect(status().isOk()).andReturn();
+			String rt = result.getResponse().getContentAsString();
+			Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ss").create();
+			System.out.println(rt);
+//			Tournament tournament = gson.fromJson(rt, Tournament.class);
+//			assertEquals(idTournament, tournament.getId());
+//			assertTrue(tournament.equals(this.tournament));
+
+		} catch (Exception e) {
+			//fail();
+			e.printStackTrace();
+		}
+	}
 }

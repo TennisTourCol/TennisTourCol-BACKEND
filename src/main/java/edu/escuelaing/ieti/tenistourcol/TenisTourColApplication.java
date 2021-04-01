@@ -1,4 +1,4 @@
-package edu.escuelaing.ieti.TenisTourCol;
+package edu.escuelaing.ieti.tenistourcol;
 
 import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoClients;

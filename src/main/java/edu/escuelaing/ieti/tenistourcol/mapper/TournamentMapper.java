@@ -1,12 +1,9 @@
-package edu.escuelaing.ieti.TenisTourCol.mapper;
+package edu.escuelaing.ieti.tenistourcol.mapper;
 
-import edu.escuelaing.ieti.TenisTourCol.model.Tournament;
-import edu.escuelaing.ieti.TenisTourCol.repository.TournamentEntity;
+import edu.escuelaing.ieti.tenistourcol.model.Tournament;
+import edu.escuelaing.ieti.tenistourcol.repository.TournamentEntity;
 
 public class TournamentMapper {
-    public TournamentMapper() {
-        super();
-    }
 
     public static TournamentEntity map(final Tournament tournament) {
 
