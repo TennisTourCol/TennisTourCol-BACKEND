@@ -4,11 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.data.mongodb.core.mapping.Document;
 
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import javax.validation.constraints.NotNull;
 import java.math.BigInteger;
 import java.util.Date;
@@ -16,11 +12,8 @@ import java.util.Date;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Document(collection = "tournament")
 public class Tournament {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private String id;
 
     @NotNull
@@ -152,21 +145,5 @@ public class Tournament {
         this.fechaFin = fechaFin;
     }
 
-    @Override
-    public String toString() {
-        return "Tournament{" +
-                "id='" + id + '\'' +
-                ", nombre='" + nombre + '\'' +
-                ", responsable='" + responsable + '\'' +
-                ", direccion='" + direccion + '\'' +
-                ", ciudad='" + ciudad + '\'' +
-                ", club='" + club + '\'' +
-                ", grado='" + grado + '\'' +
-                ", categoria='" + categoria + '\'' +
-                ", precio=" + precio +
-                ", hora=" + hora +
-                ", fechaInicio=" + fechaInicio +
-                ", fechaFin=" + fechaFin +
-                '}';
-    }
+
 }
