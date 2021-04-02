@@ -4,10 +4,8 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 import edu.escuelaing.ieti.tenistourcol.mapper.TournamentMapper;
-import edu.escuelaing.ieti.tenistourcol.model.ExceptionResponse;
-import edu.escuelaing.ieti.tenistourcol.model.Response;
-import edu.escuelaing.ieti.tenistourcol.model.SuccessResponse;
-import edu.escuelaing.ieti.tenistourcol.model.Tournament;
+import edu.escuelaing.ieti.tenistourcol.model.*;
+import edu.escuelaing.ieti.tenistourcol.repository.PlayerRepository;
 import edu.escuelaing.ieti.tenistourcol.repository.TournamentEntity;
 import edu.escuelaing.ieti.tenistourcol.repository.TournamentRepository;
 import org.junit.jupiter.api.MethodOrderer;
@@ -22,6 +20,10 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
+import edu.escuelaing.ieti.tenistourcol.model.ExceptionResponse;
+import edu.escuelaing.ieti.tenistourcol.model.Response;
+import edu.escuelaing.ieti.tenistourcol.model.SuccessResponse;
+import edu.escuelaing.ieti.tenistourcol.model.Tournament;
 
 import java.lang.reflect.Type;
 import java.math.BigInteger;
@@ -46,9 +48,14 @@ class TenisTourColApplicationTests {
 	@Autowired
 	private TournamentRepository tournamentRepository;
 
+	@Autowired
+	private PlayerRepository playerRepository;
+
 	private static String idTournament = "";
+	private static String idPlayer = "";
 
 	private static Tournament tournament;
+	private static Player player;
 
 	@Test
 	@Order(1)
@@ -234,4 +241,28 @@ class TenisTourColApplicationTests {
 			e.printStackTrace();
 		}
 	}
+
+	/*
+	@Test
+	@Order(10)
+	public void T10playerPorId() {
+		try {
+			MvcResult result = this.mockMvc.perform(get("/player/"+idPlayer)
+					//.header("Authorization", token)
+					.contentType(MediaType.APPLICATION_JSON)
+			).andExpect(status().isOk()).andReturn();
+			this.player.toString();
+			this.player.hashCode();
+			String rt = result.getResponse().getContentAsString();
+			Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ss").create();
+			SuccessResponse response = gson.fromJson(rt,  SuccessResponse.class);
+			Player player = gson.fromJson(response.getBody(), Player.class);
+			assertEquals(idPlayer, player.getId());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	 */
+
 }
