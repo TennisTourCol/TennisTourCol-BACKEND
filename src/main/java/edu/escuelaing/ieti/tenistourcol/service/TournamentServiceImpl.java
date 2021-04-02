@@ -1,6 +1,10 @@
 package edu.escuelaing.ieti.tenistourcol.service;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import edu.escuelaing.ieti.tenistourcol.exception.NotFoundException;
 import edu.escuelaing.ieti.tenistourcol.mapper.TournamentMapper;
+import edu.escuelaing.ieti.tenistourcol.model.SuccessResponse;
 import edu.escuelaing.ieti.tenistourcol.model.Tournament;
 import edu.escuelaing.ieti.tenistourcol.repository.TournamentEntity;
 import edu.escuelaing.ieti.tenistourcol.repository.TournamentRepository;
@@ -8,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -17,28 +22,34 @@ public class TournamentServiceImpl implements TournamentService{
     @Autowired
     private TournamentRepository tournamentRepository;
 
+    private Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ss").create();
+
     @Override
-    public List<Tournament> getAll() {
+    public SuccessResponse getAll() {
         List<Tournament> tournaments = new ArrayList<>();
         List<TournamentEntity> tournamentEntities = tournamentRepository.findAll();
         tournamentEntities.forEach(tournamentEntity -> tournaments.add(TournamentMapper.map(tournamentEntity)));
-        return tournaments;
-    }
-
-    @Override
-    public Tournament getById(String id) {
-        Optional<TournamentEntity> optTournament = tournamentRepository.findById(id);
-        if(optTournament.isPresent()) {
-            return TournamentMapper.map(optTournament.get());
+        if(tournaments.size()>0) {
+            return new SuccessResponse(new Date(), 200, "Se encontraron los torneos", gson.toJson(tournaments));
         } else {
-            return null;
+            throw new NotFoundException("No se encontró ningún torneo");
         }
     }
 
     @Override
-    public Tournament createTournament(Tournament tournament) {
+    public SuccessResponse getById(String id) {
+        Optional<TournamentEntity> optTournament = tournamentRepository.findById(id);
+        if(optTournament.isPresent()) {
+            return new SuccessResponse(new Date(), 200, "Se encontraron los torneos", gson.toJson(TournamentMapper.map(optTournament.get())));
+        } else {
+            throw new NotFoundException("No se encontró ningún torneo con el id "+id);
+        }
+    }
+
+    @Override
+    public SuccessResponse createTournament(Tournament tournament) {
         TournamentEntity tournamentEntity = TournamentMapper.map(tournament);
         tournamentRepository.save(tournamentEntity);
-        return TournamentMapper.map(tournamentEntity);
+        return new SuccessResponse(new Date(), 200, "Se creo el torneo "+tournament.getNombre(), gson.toJson(TournamentMapper.map(tournamentEntity)));
     }
 }

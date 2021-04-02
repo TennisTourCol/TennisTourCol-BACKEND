@@ -5,11 +5,16 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 import edu.escuelaing.ieti.tenistourcol.mapper.TournamentMapper;
 import edu.escuelaing.ieti.tenistourcol.model.ExceptionResponse;
+import edu.escuelaing.ieti.tenistourcol.model.Response;
+import edu.escuelaing.ieti.tenistourcol.model.SuccessResponse;
 import edu.escuelaing.ieti.tenistourcol.model.Tournament;
 import edu.escuelaing.ieti.tenistourcol.repository.TournamentEntity;
 import edu.escuelaing.ieti.tenistourcol.repository.TournamentRepository;
 import org.junit.FixMethodOrder;
+import org.junit.jupiter.api.MethodOrderer;
+import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestMethodOrder;
 import org.junit.runner.RunWith;
 import org.junit.runners.MethodSorters;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,7 +30,7 @@ import java.math.BigInteger;
 import java.util.Date;
 import java.util.List;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -34,7 +39,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @RunWith(SpringRunner.class)
 @AutoConfigureMockMvc
 @SpringBootTest(classes = {TenisTourColApplication.class})
-@FixMethodOrder(MethodSorters.NAME_ASCENDING)
+//@FixMethodOrder(MethodSorters.NAME_ASCENDING)
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 class TenisTourColApplicationTests {
 
 	@Autowired
@@ -48,7 +54,26 @@ class TenisTourColApplicationTests {
 	private static Tournament tournament;
 
 	@Test
-	public void T01crearTorneo() {
+	@Order(1)
+	public void T01noDebeFuncionarGetTodosLosTorneos() {
+		try {
+			MvcResult result = this.mockMvc.perform(get("/tournament")
+					//.header("Authorization", token)
+					.contentType(MediaType.APPLICATION_JSON)
+			).andExpect(status().isNotFound()).andReturn();
+
+			String rt = result.getResponse().getContentAsString();
+			Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ss").create();
+			ExceptionResponse response = gson.fromJson(rt, ExceptionResponse.class);
+			assertEquals("Not Found", response.getError());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	@Test
+	@Order(2)
+	public void T02crearTorneo() {
 		try {
 			Tournament tournament = Tournament.builder()
 					.nombre("Torneo prueba")
@@ -72,17 +97,19 @@ class TenisTourColApplicationTests {
 					.content(json)).andExpect(status().isOk())
 					.andReturn();
 			String rt = result.getResponse().getContentAsString();
-			Tournament tournament1 = gson.fromJson(rt,  Tournament.class);
+			SuccessResponse response = gson.fromJson(rt,  SuccessResponse.class);
 			assertEquals(1, tournamentRepository.findAll().size());
-			idTournament = tournament1.getId();
+			Tournament tournament1 = gson.fromJson(response.getBody(), Tournament.class);
 			this.tournament = tournament1;
+			idTournament = tournament1.getId();
 		} catch (Exception e) {
             e.printStackTrace();
 		}
 	}
 
 	@Test
-	public void T02todosLosTorneos() {
+	@Order(3)
+	public void T03todosLosTorneos() {
 		try {
 			MvcResult result = this.mockMvc.perform(get("/tournament")
 					//.header("Authorization", token)
@@ -91,8 +118,9 @@ class TenisTourColApplicationTests {
 
 			String rt = result.getResponse().getContentAsString();
 			Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ss").create();
+			SuccessResponse response = gson.fromJson(rt,  SuccessResponse.class);
 			Type tournamentListType = new TypeToken<List<Tournament>>(){}.getType();
-			List<Tournament> lista = gson.fromJson(rt, tournamentListType);
+			List<Tournament> lista = gson.fromJson(response.getBody(), tournamentListType);
 			assertEquals(1, lista.size());
 		} catch (Exception e) {
             e.printStackTrace();
@@ -100,7 +128,8 @@ class TenisTourColApplicationTests {
 	}
 
 	@Test
-	public void T03torneoPorId() {
+	@Order(4)
+	public void T04torneoPorId() {
 		try {
 			MvcResult result = this.mockMvc.perform(get("/tournament/"+idTournament)
 					//.header("Authorization", token)
@@ -110,7 +139,8 @@ class TenisTourColApplicationTests {
 			this.tournament.hashCode();
 			String rt = result.getResponse().getContentAsString();
 			Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ss").create();
-			Tournament tournament = gson.fromJson(rt, Tournament.class);
+			SuccessResponse response = gson.fromJson(rt,  SuccessResponse.class);
+			Tournament tournament = gson.fromJson(response.getBody(), Tournament.class);
 			assertEquals(idTournament, tournament.getId());
 		} catch (Exception e) {
             e.printStackTrace();
@@ -118,7 +148,8 @@ class TenisTourColApplicationTests {
 	}
 
 	@Test
-	public void T04debeFallarPorFaltaAtributos(){
+	@Order(5)
+	public void T05debeFallarPorFaltaAtributos(){
 		try {
 			Tournament tournament = Tournament.builder()
 					.id("1l")
@@ -158,18 +189,29 @@ class TenisTourColApplicationTests {
 	}
 
 	@Test
-	public void T05probarMetodosTournament(){
+	@Order(6)
+	public void T06probarMetodosTournament(){
 		TournamentEntity tournamentEntity = TournamentMapper.map(tournament);
 		tournamentEntity.toString();
+		SuccessResponse successResponse = new SuccessResponse("prueba");
+		successResponse.setBody("Prueba2");
+		successResponse.toString();
+		Response response = new Response();
+		response.toString();
 	}
 
 	@Test
-	public void T06torneoPorIdDebeRetornarNull() {
+	@Order(7)
+	public void T07torneoPorIdDebeRetornarNull() {
 		try {
-			this.mockMvc.perform(get("/tournament/"+"54a46s5dsa")
+			MvcResult result = this.mockMvc.perform(get("/tournament/"+"54a46s5dsa")
 					//.header("Authorization", token)
 					.contentType(MediaType.APPLICATION_JSON)
-			).andExpect(status().isOk()).andReturn();
+			).andExpect(status().isNotFound()).andReturn();
+			String rt = result.getResponse().getContentAsString();
+			Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ss").create();
+			ExceptionResponse response = gson.fromJson(rt,  ExceptionResponse.class);
+			assertEquals("Not Found", response.getError());
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

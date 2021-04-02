@@ -1,5 +1,6 @@
 package edu.escuelaing.ieti.tenistourcol.controller;
 
+import edu.escuelaing.ieti.tenistourcol.exception.NotFoundException;
 import edu.escuelaing.ieti.tenistourcol.model.ExceptionResponse;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -32,7 +33,15 @@ public class Handler {
 
             String mensaje = lsbErrors.toString();
 
-            return new ExceptionResponse(new Date(), 400, "Bad Request", mensaje);
+            return new ExceptionResponse(new Date(), 400, mensaje, "Bad Request");
         }
+
+    @ExceptionHandler(NotFoundException.class)
+    @ResponseStatus(code = HttpStatus.NOT_FOUND)
+    @ResponseBody
+    public ExceptionResponse handleNotFoundException(NotFoundException ex, WebRequest request) {
+
+        return new ExceptionResponse(new Date(), 404, ex.getMessage(), "Not Found");
+    }
 
     }

@@ -1,58 +1,28 @@
 package edu.escuelaing.ieti.tenistourcol.model;
 
-import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.util.Date;
 
-@AllArgsConstructor
 @NoArgsConstructor
-public class ExceptionResponse {
+@Getter
+@Setter
+public class ExceptionResponse extends Response{
 
-    private Date timestamp;
-    private Integer status;
-    private String error;
-    private String message;
-
-    public Date getTimestamp() {
-        return timestamp;
-    }
-
-    public void setTimestamp(Date timestamp) {
-        this.timestamp = timestamp;
-    }
-
-    public Integer getStatus() {
-        return status;
-    }
-
-    public void setStatus(Integer status) {
-        this.status = status;
-    }
-
-    public String getError() {
-        return error;
-    }
-
-    public void setError(String error) {
+    public ExceptionResponse(Date timestamp, Integer status, String message, String error) {
+        super(timestamp, status, message);
         this.error = error;
     }
 
-    public String getMessage() {
-        return message;
-    }
-
-    public void setMessage(String message) {
-        this.message = message;
-    }
+    private String error;
 
     @Override
     public String toString() {
         return "ExceptionResponse{" +
-                "timestamp=" + timestamp +
-                ", status=" + status +
+                "timestamp='" + this.getTimestamp() + '\'' +
+                ", status='" + this.getStatus() + '\'' +
+                ", message='" + this.getMessage() + '\'' +
                 ", error='" + error + '\'' +
-                ", message='" + message + '\'' +
-                '}';
+                "} ";
     }
 }
