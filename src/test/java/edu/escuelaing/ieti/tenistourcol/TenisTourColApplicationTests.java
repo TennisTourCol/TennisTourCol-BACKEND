@@ -59,7 +59,7 @@ class TenisTourColApplicationTests {
 					.grado("A")
 					.categoria("20-22")
 					.precio(BigInteger.valueOf(10000))
-					.hora(new Date())
+					.hora("12:00")
 					.fechaInicio(new Date())
 					.fechaFin(new Date())
 					.build();
@@ -129,7 +129,7 @@ class TenisTourColApplicationTests {
 					.club("El club de prueba")
 					.categoria("20-22")
 					.precio(BigInteger.valueOf(10000))
-					.hora(new Date())
+					.hora("12:00")
 					.fechaInicio(new Date())
 					.fechaFin(new Date())
 					.build();
