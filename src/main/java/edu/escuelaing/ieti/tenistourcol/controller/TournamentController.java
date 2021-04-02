@@ -1,5 +1,6 @@
 package edu.escuelaing.ieti.tenistourcol.controller;
 
+import edu.escuelaing.ieti.tenistourcol.model.Response;
 import edu.escuelaing.ieti.tenistourcol.model.Tournament;
 import edu.escuelaing.ieti.tenistourcol.service.TournamentService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,17 +19,22 @@ public class TournamentController {
     TournamentService tournamentService;
 
     @GetMapping
-    public ResponseEntity<?> getAll(){
+    public ResponseEntity<Response> getAll(){
         return ResponseEntity.ok(tournamentService.getAll());
     }
 
     @PostMapping
-    public ResponseEntity<?> create(@Valid @RequestBody Tournament tournament) {
+    public ResponseEntity<Response> create(@Valid @RequestBody Tournament tournament) {
         return ResponseEntity.ok(tournamentService.createTournament(tournament));
     }
 
     @GetMapping(value = "/{id}")
-    public ResponseEntity<?> getById(@PathVariable String id){
+    public ResponseEntity<Response> getById(@PathVariable String id){
         return ResponseEntity.ok(tournamentService.getById(id));
+    }
+
+    @DeleteMapping
+    public ResponseEntity<Response> delete(@Valid @RequestBody Tournament tournament) {
+        return ResponseEntity.ok(tournamentService.deleteTournament(tournament));
     }
 }

@@ -19,22 +19,22 @@ import java.util.Date;
 @ControllerAdvice
 public class Handler {
 
-        protected static Logger logger = LogManager.getLogger(Handler.class);
+    protected static Logger logger = LogManager.getLogger(Handler.class);
 
-        @ExceptionHandler(MethodArgumentNotValidException.class)
-        @ResponseStatus(code = HttpStatus.BAD_REQUEST)
-        @ResponseBody
-        public ExceptionResponse handleMethodArgumentNotValidException(MethodArgumentNotValidException ex, WebRequest request) {
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    @ResponseStatus(code = HttpStatus.BAD_REQUEST)
+    @ResponseBody
+    public ExceptionResponse handleMethodArgumentNotValidException(MethodArgumentNotValidException ex, WebRequest request) {
 
-            BindingResult result = ex.getBindingResult();
-            StringBuffer lsbErrors = new StringBuffer();
+        BindingResult result = ex.getBindingResult();
+        StringBuffer lsbErrors = new StringBuffer();
 
-            result.getFieldErrors().stream().forEach( err -> lsbErrors.append( MessageFormat.format("El campo {0} {1}.", err.getField(), err.getDefaultMessage() ) ) );
+        result.getFieldErrors().stream().forEach( err -> lsbErrors.append( MessageFormat.format("El campo {0} {1}.", err.getField(), err.getDefaultMessage() ) ) );
 
-            String mensaje = lsbErrors.toString();
+        String mensaje = lsbErrors.toString();
 
-            return new ExceptionResponse(new Date(), 400, mensaje, "Bad Request");
-        }
+        return new ExceptionResponse(new Date(), 400, mensaje, "Bad Request");
+    }
 
     @ExceptionHandler(NotFoundException.class)
     @ResponseStatus(code = HttpStatus.NOT_FOUND)
@@ -44,4 +44,4 @@ public class Handler {
         return new ExceptionResponse(new Date(), 404, ex.getMessage(), "Not Found");
     }
 
-    }
+}
