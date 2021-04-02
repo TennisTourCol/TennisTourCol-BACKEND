@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import edu.escuelaing.ieti.tenistourcol.exception.NotFoundException;
 import edu.escuelaing.ieti.tenistourcol.mapper.TournamentMapper;
+import edu.escuelaing.ieti.tenistourcol.model.Response;
 import edu.escuelaing.ieti.tenistourcol.model.SuccessResponse;
 import edu.escuelaing.ieti.tenistourcol.model.Tournament;
 import edu.escuelaing.ieti.tenistourcol.repository.TournamentEntity;
@@ -51,5 +52,11 @@ public class TournamentServiceImpl implements TournamentService{
         TournamentEntity tournamentEntity = TournamentMapper.map(tournament);
         tournamentRepository.save(tournamentEntity);
         return new SuccessResponse(new Date(), 200, "Se creo el torneo "+tournament.getNombre(), gson.toJson(TournamentMapper.map(tournamentEntity)));
+    }
+
+    @Override
+    public Response deleteTournament(Tournament tournament) {
+        tournamentRepository.delete(TournamentMapper.map(tournament));
+        return new SuccessResponse(new Date(), 200, "Se elimino el torneo "+tournament.getNombre(), gson.toJson(TournamentMapper.map(tournament)));
     }
 }

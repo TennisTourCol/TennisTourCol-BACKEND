@@ -31,4 +31,9 @@ public class TournamentController {
     public ResponseEntity<?> getById(@PathVariable String id){
         return ResponseEntity.ok(tournamentService.getById(id));
     }
+
+    @DeleteMapping
+    public ResponseEntity<?> delete(@Valid @RequestBody Tournament tournament) {
+        return ResponseEntity.ok(tournamentService.deleteTournament(tournament));
+    }
 }

@@ -29,8 +29,7 @@ import java.util.Date;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 
@@ -210,6 +209,27 @@ class TenisTourColApplicationTests {
 			Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ss").create();
 			ExceptionResponse response = gson.fromJson(rt,  ExceptionResponse.class);
 			assertEquals("Not Found", response.getError());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	@Test
+	@Order(9)
+	public void T08eliminarTorneo() {
+		try {
+			Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ss").create();
+			String json = gson.toJson(tournament);
+			MvcResult result = this.mockMvc.perform(delete("/tournament")
+					//.header("Authorization", token)
+					.contentType(MediaType.APPLICATION_JSON)
+					.content(json))
+					.andExpect(status().isOk())
+					.andReturn();
+			String rt = result.getResponse().getContentAsString();
+			SuccessResponse response = gson.fromJson(rt,  SuccessResponse.class);
+//			assertEquals("Not Found", response.getError());
+			System.out.println(response);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
