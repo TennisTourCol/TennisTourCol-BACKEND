@@ -1,11 +1,8 @@
 package edu.escuelaing.ieti.tenistourcol.model;
 
 import lombok.*;
-import org.springframework.data.annotation.Id;
 
 import javax.validation.constraints.NotNull;
-import java.util.List;
-
 
 @Builder
 @NoArgsConstructor
@@ -13,15 +10,20 @@ import java.util.List;
 @Getter
 @Setter
 @ToString
-public class Player {
-
+public class Match {
 
     private String id;
 
     @NotNull
-    private String name, mail, apodo, liga, ciudad, description;
+    private String player1;
 
-    private Integer imagen;
+    @NotNull
+    private String player2;
 
+    @NotNull
+    private String court;
+
+    @NotNull
+    private String round;
 
 }

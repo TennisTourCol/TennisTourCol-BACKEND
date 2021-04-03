@@ -5,6 +5,7 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 import edu.escuelaing.ieti.tenistourcol.mapper.TournamentMapper;
 import edu.escuelaing.ieti.tenistourcol.model.*;
+import edu.escuelaing.ieti.tenistourcol.repository.MatchRepository;
 import edu.escuelaing.ieti.tenistourcol.repository.PlayerRepository;
 import edu.escuelaing.ieti.tenistourcol.repository.TournamentEntity;
 import edu.escuelaing.ieti.tenistourcol.repository.TournamentRepository;
@@ -25,6 +26,7 @@ import edu.escuelaing.ieti.tenistourcol.model.Response;
 import edu.escuelaing.ieti.tenistourcol.model.SuccessResponse;
 import edu.escuelaing.ieti.tenistourcol.model.Tournament;
 
+import javax.validation.constraints.NotNull;
 import java.lang.reflect.Type;
 import java.math.BigInteger;
 import java.util.Date;
@@ -51,11 +53,17 @@ class TenisTourColApplicationTests {
 	@Autowired
 	private PlayerRepository playerRepository;
 
+	@Autowired
+	private MatchRepository matchRepository;
+
 	private static String idTournament = "";
 	private static String idPlayer = "";
+	private static String idMatch = "";
+	private static String roundMatch = "";
 
 	private static Tournament tournament;
 	private static Player player;
+	private static Match match;
 
 	@Test
 	@Order(1)
@@ -262,7 +270,105 @@ class TenisTourColApplicationTests {
 			e.printStackTrace();
 		}
 	}
-
 	 */
 
+	@Test
+	@Order(11)
+	public void T11CreateMatch(){
+		try {
+			Match match = Match.builder()
+					.player1("Toreto")
+					.player2("La roca")
+					.court("3")
+					.round("8")
+					.build();
+			Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ss").create();
+			String json = gson.toJson(match);
+			assertEquals(0, matchRepository.findAll().size());
+			MvcResult result = this.mockMvc.perform(post("/match")
+					//.header("Authorization", token)
+					.contentType(MediaType.APPLICATION_JSON)
+					.content(json)).andExpect(status().isOk())
+					.andReturn();
+			String rt = result.getResponse().getContentAsString();
+			SuccessResponse response = gson.fromJson(rt,  SuccessResponse.class);
+			assertEquals(1, matchRepository.findAll().size());
+			Match match1 = gson.fromJson(response.getBody(), Match.class);
+			this.match = match1;
+			idMatch = match1.getId();
+			roundMatch = match1.getRound();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+//	@Test
+//	@Order(12)
+//	public void T12MatchByRound() {
+//		try {
+//			MvcResult result = this.mockMvc.perform(get("/match/"+"8")
+//					//.header("Authorization", token)
+//					.contentType(MediaType.APPLICATION_JSON)
+//			).andExpect(status().isOk()).andReturn();
+//			this.match.toString();
+//			this.match.hashCode();
+//			String rt = result.getResponse().getContentAsString();
+//			Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ss").create();
+//			SuccessResponse response = gson.fromJson(rt,  SuccessResponse.class);
+//			Match match = gson.fromJson(response.getBody(), Match.class);
+//			assertEquals(roundMatch, match.getRound());
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//		}
+//	}
+
+	@Test
+	@Order(13)
+	public void T13CreateMatchError() {
+		try {
+			Match match = Match.builder()
+					.player1("Toreto")
+					.player2("La roca")
+					.round("8")
+					.build();
+			Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ss").create();
+			String json = gson.toJson(match);
+			MvcResult result = this.mockMvc.perform(post("/match")
+					//.header("Authorization", token)
+					.contentType(MediaType.APPLICATION_JSON)
+					.content(json)).andExpect(status().isBadRequest())
+					.andReturn();
+			String rt = result.getResponse().getContentAsString();
+			ExceptionResponse response = gson.fromJson(rt, ExceptionResponse.class);
+			response.toString();
+			String mensaje = "El campo court must not be null.";
+			ExceptionResponse response1 = new ExceptionResponse();
+			response1.setTimestamp(response.getTimestamp());
+			response1.setStatus(400);
+			response1.setError("Bad Request");
+			response1.setMessage(mensaje);
+			response.hashCode();
+			Match.builder().toString();
+			assertEquals(mensaje, response.getMessage());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	@Test
+	@Order(14)
+	public void T14MatchByRoundNull() {
+		try {
+			MvcResult result = this.mockMvc.perform(get("/match/"+"32")
+					//.header("Authorization", token)
+					.contentType(MediaType.APPLICATION_JSON)
+			).andExpect(status().isNotFound()).andReturn();
+			String rt = result.getResponse().getContentAsString();
+			Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ss").create();
+			ExceptionResponse response = gson.fromJson(rt,  ExceptionResponse.class);
+			assertEquals("Not Found", response.getError());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 }

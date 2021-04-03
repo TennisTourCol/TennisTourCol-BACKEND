@@ -25,7 +25,7 @@ public class PlayerServiceImpl implements PlayerService{
     private Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ss").create();
 
     @Override
-    public Response getUserById(Long id) {
+    public Response getUserById(String id) {
         Optional<PlayerEntity> optPlayer = playerRepository.findById(id);
         if(optPlayer.isPresent()) {
             return new SuccessResponse(new Date(), 200, "Se encontro el jugador", gson.toJson(PlayerMapper.map(optPlayer.get())));
