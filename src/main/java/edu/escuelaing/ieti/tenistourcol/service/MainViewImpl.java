@@ -6,16 +6,11 @@ import edu.escuelaing.ieti.tenistourcol.model.SuccessResponse;
 import org.springframework.stereotype.Service;
 
 import java.io.BufferedReader;
-import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
-
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
 
 @Service
 public class MainViewImpl implements MainView {
@@ -41,7 +36,6 @@ public class MainViewImpl implements MainView {
                 while ((responseLine = br.readLine()) != null) {
                     response.append(responseLine.trim());
                 }
-//                System.out.println(response.toString());
 
             return new SuccessResponse(new Date(), 200, "Se encontraron los partidos de hoy", response.toString());
         } catch (IOException e) {
