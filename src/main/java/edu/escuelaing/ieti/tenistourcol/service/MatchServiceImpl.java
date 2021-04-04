@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 
 @Service
@@ -40,6 +41,21 @@ public class MatchServiceImpl implements MatchService{
     public Response create(Match match) {
         MatchEntity matchEntity = MatchMapper.map(match);
         matchRepository.save(matchEntity);
-        return new SuccessResponse(new Date(), 200, "Se creo el partido " , gson.toJson(match));
+        return new SuccessResponse(new Date(), 200, "Se creo el partido " , gson.toJson(MatchMapper.map(matchEntity)));
+    }
+
+    @Override
+    public Response update(Match match) {
+        Optional<MatchEntity> matchOpt = matchRepository.findById(match.getId());
+        if(matchOpt.isPresent()){
+            MatchEntity matchEntity = matchOpt.get();
+            matchEntity.setPlayer1(match.getPlayer1());
+            matchEntity.setPlayer2(match.getPlayer2());
+            matchEntity.setRound(match.getRound());
+            matchRepository.save(matchEntity);
+            return new SuccessResponse(new Date(), 200, "Se actualizo el partido " , gson.toJson(match));
+        } else {
+            throw new NotFoundException("No se encontro el partido con id "+match.getId());
+        }
     }
 }

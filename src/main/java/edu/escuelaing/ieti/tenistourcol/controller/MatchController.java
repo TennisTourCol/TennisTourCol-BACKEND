@@ -27,4 +27,9 @@ public class MatchController {
     public ResponseEntity<Response> getById(@PathVariable String round){
         return ResponseEntity.ok(matchService.getByRound(round));
     }
+
+    @PutMapping
+    public ResponseEntity<Response> updateMatch(@Valid @RequestBody Match match){
+        return ResponseEntity.ok(matchService.update(match));
+    }
 }
