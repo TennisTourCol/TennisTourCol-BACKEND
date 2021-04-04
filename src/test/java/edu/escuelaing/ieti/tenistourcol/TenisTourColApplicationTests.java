@@ -60,8 +60,6 @@ class TenisTourColApplicationTests {
 
 	private static String idTournament = "";
 	private static String idPlayer = "";
-	private static String idMatch = "";
-	private static String roundMatch = "";
 
 	private static Tournament tournament;
 	private static Player player;
@@ -295,9 +293,6 @@ class TenisTourColApplicationTests {
 			SuccessResponse response = gson.fromJson(rt,  SuccessResponse.class);
 			assertEquals(1, matchRepository.findAll().size());
 			Match match1 = gson.fromJson(response.getBody(), Match.class);
-			this.match = match1;
-  			idMatch = match1.getId();
-			roundMatch = match1.getRound();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
