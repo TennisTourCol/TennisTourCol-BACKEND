@@ -561,6 +561,7 @@ class TenisTourColApplicationTests {
 			String rt = result.getResponse().getContentAsString();
 			ExceptionResponse response = gson.fromJson(rt,  ExceptionResponse.class);
 			assertEquals("Not Found", response.getError());
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
