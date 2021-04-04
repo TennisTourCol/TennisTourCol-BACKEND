@@ -29,6 +29,7 @@ import edu.escuelaing.ieti.tenistourcol.model.Tournament;
 import javax.validation.constraints.NotNull;
 import java.lang.reflect.Type;
 import java.math.BigInteger;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -412,6 +413,94 @@ class TenisTourColApplicationTests {
 			String rt = result.getResponse().getContentAsString();
 			ExceptionResponse response = gson.fromJson(rt,  ExceptionResponse.class);
 			assertEquals("Not Found", response.getError());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	@Test
+	@Order(17)
+	public void T17crearPlayer() {
+		List<String> schedule = new ArrayList<>();
+		try {
+			Player player = Player.builder()
+					.id("2")
+					.name("player prueba")
+					.apodo("prueeba")
+					.ciudad("Bogota")
+					.description("nada")
+					.liga("Bogota")
+					.schedule(schedule)
+					.mail("prueba@gmail.com")
+					.imagen(new Integer(23))
+					.build();
+			Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ss").create();
+			String json = gson.toJson(player);
+			assertEquals(0, playerRepository.findAll().size());
+			MvcResult result = this.mockMvc.perform(post("/player")
+					//.header("Authorization", token)
+					.contentType(MediaType.APPLICATION_JSON)
+					.content(json)).andExpect(status().isOk())
+					.andReturn();
+			String rt = result.getResponse().getContentAsString();
+			SuccessResponse response = gson.fromJson(rt,  SuccessResponse.class);
+			assertEquals(1, playerRepository.findAll().size());
+			Player player1 = gson.fromJson(response.getBody(), Player.class);
+			this.player = player1;
+			idPlayer = player1.getId();
+			System.out.println(idPlayer);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+    @Test
+    @Order(18)
+    public void T18crearTorneo() {
+        try {
+            Tournament tournament = Tournament.builder()
+                    .id("prueba2")
+                    .nombre("Torneo prueba 2")
+                    .responsable("David")
+                    .direccion("Tv 1 #2-3")
+                    .ciudad("Bogotá")
+                    .club("El club de david")
+                    .grado("1")
+                    .categoria("12-14")
+                    .precio(BigInteger.valueOf(10000))
+                    .hora("10:00")
+                    .fechaInicio(new Date())
+                    .fechaFin(new Date())
+                    .build();
+            Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ss").create();
+            String json = gson.toJson(tournament);
+            MvcResult result = this.mockMvc.perform(post("/tournament")
+                    //.header("Authorization", token)
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(json)).andExpect(status().isOk())
+                    .andReturn();
+            String rt = result.getResponse().getContentAsString();
+            SuccessResponse response = gson.fromJson(rt,  SuccessResponse.class);
+            assertEquals(2, tournamentRepository.findAll().size());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+	@Test
+	@Order(18)
+	public void T18setSchedule() {
+		try {
+			Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ss").create();
+
+			MvcResult result = this.mockMvc.perform(post("/player/2/addTournament/prueba2")
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .accept(MediaType.APPLICATION_JSON)).andExpect(status().isOk())
+                    .andReturn();
+			String rt = result.getResponse().getContentAsString();
+			SuccessResponse response = gson.fromJson(rt,  SuccessResponse.class);
+            System.out.println(response);
+			Player player1 = gson.fromJson(response.getBody(), Player.class);
+            assertEquals(1, player1.getSchedule().size());
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
