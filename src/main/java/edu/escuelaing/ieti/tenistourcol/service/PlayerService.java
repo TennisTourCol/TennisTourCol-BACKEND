@@ -8,4 +8,5 @@ public interface PlayerService {
     Response addTournament(String idUser, String idTournament);
     Response getSchedule(String id);
     Response createPlayer(Player player);
+    Response getUserByIdAndTournament(String id, String idT);
 }

@@ -560,4 +560,57 @@ class TenisTourColApplicationTests {
 		}
 	}
 
+	@Test
+	@Order(24)
+	public void T24getPlayerByIdAndTournament(){
+		try {
+			MvcResult result = this.mockMvc.perform(get("/player/"+"1"+"/addTournament/"+"prueba")
+					//.header("Authorization", token)
+					.contentType(MediaType.APPLICATION_JSON)
+			).andExpect(status().isOk()).andReturn();
+			String rt = result.getResponse().getContentAsString();
+			Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ss").create();
+			SuccessResponse response = gson.fromJson(rt,  SuccessResponse.class);
+			Player player = gson.fromJson(response.getBody(), Player.class);
+			assertEquals("1", player.getId());
+			assertEquals("prueba", player.getSchedule().get(0));
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	@Test
+	@Order(25)
+	public void T25getPlayerByIdAndTournamentErrorTournament(){
+		try {
+			MvcResult result = this.mockMvc.perform(get("/player/"+"1"+"/addTournament/"+"prueba1")
+					//.header("Authorization", token)
+					.contentType(MediaType.APPLICATION_JSON)
+			).andExpect(status().isNotFound()).andReturn();
+			Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ss").create();
+			String rt = result.getResponse().getContentAsString();
+			ExceptionResponse response = gson.fromJson(rt,  ExceptionResponse.class);
+			assertEquals("Not Found", response.getError());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	@Test
+	@Order(26)
+	public void T26getPlayerByIdAndTournamentErrorPlayer(){
+		try {
+			MvcResult result = this.mockMvc.perform(get("/player/"+"2345"+"/addTournament/"+"prueba")
+					//.header("Authorization", token)
+					.contentType(MediaType.APPLICATION_JSON)
+			).andExpect(status().isNotFound()).andReturn();
+			Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ss").create();
+			String rt = result.getResponse().getContentAsString();
+			ExceptionResponse response = gson.fromJson(rt,  ExceptionResponse.class);
+			assertEquals("Not Found", response.getError());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
 }
