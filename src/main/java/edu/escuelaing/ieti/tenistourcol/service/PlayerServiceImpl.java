@@ -60,12 +60,13 @@ public class PlayerServiceImpl implements PlayerService{
 
     @Override
     public Response getSchedule(String id) {
-        Optional<PlayerEntity> optPlayer = playerRepository.findById(id);
-        if(optPlayer.isPresent()) {
-            return new SuccessResponse(new Date(), 200, "Se encontro el jugador", gson.toJson(optPlayer.get().getSchedule()));
-        } else {
-            throw new NotFoundException("No se encontró ningún jugador con el id "+id);
-        }
+        //Optional<PlayerEntity> optPlayer = playerRepository.findById(id);
+        //if(optPlayer.isPresent()) {
+        //    return new SuccessResponse(new Date(), 200, "Se encontro el jugador", gson.toJson(optPlayer.get().getSchedule()));
+        //} else {
+        //    throw new NotFoundException("No se encontró ningún jugador con el id "+id);
+        //}
+        return null;
     }
 
     @Override
