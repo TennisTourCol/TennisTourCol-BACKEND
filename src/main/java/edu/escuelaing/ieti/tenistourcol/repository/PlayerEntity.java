@@ -1,8 +1,6 @@
 package edu.escuelaing.ieti.tenistourcol.repository;
 import lombok.*;
 import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.Document;
-
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import java.util.List;
@@ -13,7 +11,6 @@ import java.util.List;
 @Getter
 @Setter
 @ToString
-@Document(collection = "player")
 public class PlayerEntity {
         @Id
         @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -25,5 +22,4 @@ public class PlayerEntity {
         private String ciudad;
         private String description;
         private Integer imagen;
-        private List<String> schedule;
     }

@@ -20,7 +20,6 @@ public class PlayerMapper {
         playerEntity.setLiga(player.getLiga());
         playerEntity.setCiudad(player.getCiudad());
         playerEntity.setImagen(player.getImagen());
-        playerEntity.setSchedule(player.getSchedule());
         return playerEntity;
     }
 
@@ -35,7 +34,6 @@ public class PlayerMapper {
         player.setApodo(playerEntity.getApodo());
         player.setLiga(playerEntity.getLiga());
         player.setImagen(playerEntity.getImagen());
-        player.setSchedule(playerEntity.getSchedule());
 
         return player;
     }
