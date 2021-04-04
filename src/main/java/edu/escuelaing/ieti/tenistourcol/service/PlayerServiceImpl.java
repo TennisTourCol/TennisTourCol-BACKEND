@@ -9,6 +9,7 @@ import edu.escuelaing.ieti.tenistourcol.mapper.TournamentMapper;
 import edu.escuelaing.ieti.tenistourcol.model.Player;
 import edu.escuelaing.ieti.tenistourcol.model.Response;
 import edu.escuelaing.ieti.tenistourcol.model.SuccessResponse;
+import edu.escuelaing.ieti.tenistourcol.model.Tournament;
 import edu.escuelaing.ieti.tenistourcol.repository.PlayerEntity;
 import edu.escuelaing.ieti.tenistourcol.repository.PlayerRepository;
 import edu.escuelaing.ieti.tenistourcol.repository.TournamentEntity;
@@ -16,6 +17,7 @@ import edu.escuelaing.ieti.tenistourcol.repository.TournamentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -60,13 +62,23 @@ public class PlayerServiceImpl implements PlayerService{
 
     @Override
     public Response getSchedule(String id) {
-        //Optional<PlayerEntity> optPlayer = playerRepository.findById(id);
-        //if(optPlayer.isPresent()) {
-        //    return new SuccessResponse(new Date(), 200, "Se encontro el jugador", gson.toJson(optPlayer.get().getSchedule()));
-        //} else {
-        //    throw new NotFoundException("No se encontró ningún jugador con el id "+id);
-        //}
-        return null;
+        Optional<PlayerEntity> optPlayer = playerRepository.findById(id);
+        if(optPlayer.isPresent()) {
+            List<Tournament> schedule = new ArrayList<>();
+            for(String i: optPlayer.get().getSchedule()){
+                Optional<TournamentEntity> optTournament = tournamentRepository.findById(i);
+                if(optTournament.isPresent()){
+                    Tournament temp = TournamentMapper.map(optTournament.get());
+                    schedule.add(temp);
+                }
+                else{
+                    throw new NotFoundException("No se encontró ningún torneo con el id "+i+" dentro de la busqueda del calendario");
+                }
+            }
+            return new SuccessResponse(new Date(), 200, "Se encontro el schedule", gson.toJson(schedule));
+        } else {
+            throw new NotFoundException("No se encontró ningún jugador con el id "+id);
+        }
     }
 
     @Override
