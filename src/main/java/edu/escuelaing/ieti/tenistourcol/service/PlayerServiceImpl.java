@@ -76,4 +76,18 @@ public class PlayerServiceImpl implements PlayerService{
         return new SuccessResponse(new Date(), 200, "Se creo el torneo "+player.getName(), gson.toJson(PlayerMapper.map(playerEntity)));
     }
 
+    @Override
+    public Response getUserByIdAndTournament(String id, String idT) {
+        Optional<PlayerEntity> playerEntity = playerRepository.findById(id);
+        if(playerEntity.isPresent()){
+            if (playerEntity.get().getSchedule().contains(idT)){
+                return new SuccessResponse(new Date(), 200, "Se encontro el jugador con id: "+ id +" en el torneo con id: "+ idT , gson.toJson(PlayerMapper.map(playerEntity.get())));
+            }else {
+                throw new NotFoundException("No se encontró ningun torneo con el id "+ idT);
+            }
+        }else{
+            throw new NotFoundException("No se encontró ningún jugador con el id "+id);
+        }
+    }
+
 }

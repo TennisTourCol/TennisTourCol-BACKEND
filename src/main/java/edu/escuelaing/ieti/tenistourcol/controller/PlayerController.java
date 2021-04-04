@@ -24,6 +24,7 @@ public class PlayerController {
     public ResponseEntity<Response> getById(@PathVariable String id){
         return ResponseEntity.ok(playerService.getUserById(id));
     }
+
     @PostMapping(value = "/{id}/addTournament/{idT}")
     public ResponseEntity<Response> addTournament(@PathVariable String id, @PathVariable String idT){
         return ResponseEntity.ok(playerService.addTournament(id,idT));
@@ -36,6 +37,11 @@ public class PlayerController {
     @PostMapping
     public ResponseEntity<Response> create(@Valid @RequestBody Player player) {
         return ResponseEntity.ok(playerService.createPlayer(player));
+    }
+
+    @GetMapping(value = "/{id}/addTournament/{idT}")
+    public ResponseEntity<Response> getByIdAndTournament(@PathVariable String id, @PathVariable String idT){
+        return ResponseEntity.ok(playerService.getUserByIdAndTournament(id, idT));
     }
 
 }
