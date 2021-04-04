@@ -543,7 +543,7 @@ class TenisTourColApplicationTests {
 	}
 	@Test
 	@Order(22)
-	public void T22setSchedule() {
+	public void T22setScheduleError() {
 		try {
 			Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ss").create();
 
@@ -559,6 +559,27 @@ class TenisTourColApplicationTests {
 			e.printStackTrace();
 		}
 	}
+
+	@Test
+	@Order(23)
+	public void T23getSchedule() {
+		try {
+			Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ss").create();
+
+			MvcResult result = this.mockMvc.perform(get("/player/1/schedule")
+					.contentType(MediaType.APPLICATION_JSON)
+					.accept(MediaType.APPLICATION_JSON)).andExpect(status().isOk())
+					.andReturn();
+			String rt = result.getResponse().getContentAsString();
+			SuccessResponse response = gson.fromJson(rt,  SuccessResponse.class);
+			Tournament[] tournaments = gson.fromJson(response.getBody(), Tournament[].class);
+			assertEquals(1, tournaments.length);
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
 
 	@Test
 	@Order(24)
@@ -605,6 +626,23 @@ class TenisTourColApplicationTests {
 					.contentType(MediaType.APPLICATION_JSON)
 			).andExpect(status().isNotFound()).andReturn();
 			Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ss").create();
+			String rt = result.getResponse().getContentAsString();
+			ExceptionResponse response = gson.fromJson(rt,  ExceptionResponse.class);
+			assertEquals("Not Found", response.getError());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	@Test
+	@Order(28)
+	public void T28getScheduleError() {
+		try {
+			Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ss").create();
+			MvcResult result = this.mockMvc.perform(get("/player/2/schedule")
+					.contentType(MediaType.APPLICATION_JSON)
+					.accept(MediaType.APPLICATION_JSON)).andExpect(status().isNotFound())
+					.andReturn();
 			String rt = result.getResponse().getContentAsString();
 			ExceptionResponse response = gson.fromJson(rt,  ExceptionResponse.class);
 			assertEquals("Not Found", response.getError());
