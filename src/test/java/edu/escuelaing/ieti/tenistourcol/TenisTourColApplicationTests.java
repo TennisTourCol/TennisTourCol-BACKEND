@@ -302,25 +302,23 @@ class TenisTourColApplicationTests {
 		}
 	}
 
-//	@Test
-//	@Order(12)
-//	public void T12MatchByRound() {
-//		try {
-//			MvcResult result = this.mockMvc.perform(get("/match/"+"8")
-//					//.header("Authorization", token)
-//					.contentType(MediaType.APPLICATION_JSON)
-//			).andExpect(status().isOk()).andReturn();
-//			this.match.toString();
-//			this.match.hashCode();
-//			String rt = result.getResponse().getContentAsString();
-//			Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ss").create();
-//			SuccessResponse response = gson.fromJson(rt,  SuccessResponse.class);
-//			Match match = gson.fromJson(response.getBody(), Match.class);
-//			assertEquals(roundMatch, match.getRound());
-//		} catch (Exception e) {
-//			e.printStackTrace();
-//		}
-//	}
+	@Test
+	@Order(12)
+	public void T12MatchByRound() {
+		try {
+			MvcResult result = this.mockMvc.perform(get("/match/"+"8")
+					//.header("Authorization", token)
+					.contentType(MediaType.APPLICATION_JSON)
+			).andExpect(status().isOk()).andReturn();
+			String rt = result.getResponse().getContentAsString();
+			Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ss").create();
+			SuccessResponse response = gson.fromJson(rt,  SuccessResponse.class);
+			Match[] match = gson.fromJson(response.getBody(), Match[].class);
+			assertEquals("8", match[0].getRound());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 
 	@Test
 	@Order(13)
