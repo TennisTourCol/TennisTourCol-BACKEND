@@ -548,5 +548,22 @@ class TenisTourColApplicationTests {
 			e.printStackTrace();
 		}
 	}
+	@Test
+	@Order(22)
+	public void T22setSchedule() {
+		try {
+			Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ss").create();
+
+			MvcResult result = this.mockMvc.perform(post("/player/1/addTournament/prueba2")
+					.contentType(MediaType.APPLICATION_JSON)
+					.accept(MediaType.APPLICATION_JSON)).andExpect(status().isNotFound())
+					.andReturn();
+			String rt = result.getResponse().getContentAsString();
+			ExceptionResponse response = gson.fromJson(rt,  ExceptionResponse.class);
+			assertEquals("Not Found", response.getError());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 
 }
