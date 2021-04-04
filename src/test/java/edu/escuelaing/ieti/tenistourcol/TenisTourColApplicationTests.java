@@ -9,6 +9,7 @@ import edu.escuelaing.ieti.tenistourcol.repository.MatchRepository;
 import edu.escuelaing.ieti.tenistourcol.repository.PlayerRepository;
 import edu.escuelaing.ieti.tenistourcol.repository.TournamentEntity;
 import edu.escuelaing.ieti.tenistourcol.repository.TournamentRepository;
+import edu.escuelaing.ieti.tenistourcol.service.MainView;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
@@ -29,6 +30,7 @@ import edu.escuelaing.ieti.tenistourcol.model.Tournament;
 import javax.validation.constraints.NotNull;
 import java.lang.reflect.Type;
 import java.math.BigInteger;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
@@ -412,6 +414,46 @@ class TenisTourColApplicationTests {
 			String rt = result.getResponse().getContentAsString();
 			ExceptionResponse response = gson.fromJson(rt,  ExceptionResponse.class);
 			assertEquals("Not Found", response.getError());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	@Test
+	@Order(17)
+	public void T17ProbarMainView(){
+		MvcResult result = null;
+		Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ss").create();
+		SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+		String date = simpleDateFormat.format(new Date());
+		try {
+			result = this.mockMvc.perform(get("/mainview/"+date)
+					//.header("Authorization", token)
+					.contentType(MediaType.APPLICATION_JSON))
+					.andExpect(status().isOk())
+					.andReturn();
+			String rt = result.getResponse().getContentAsString();
+			SuccessResponse response = gson.fromJson(rt,  SuccessResponse.class);
+			assertEquals("Se encontraron los partidos de hoy", response.getMessage());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	@Test
+	@Order(18)
+	public void T18DebeFallarMainView(){
+		MvcResult result = null;
+		Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ss").create();
+		String date = "unnd/ds/mj";
+		try {
+			result = this.mockMvc.perform(get("/mainview/"+date)
+					//.header("Authorization", token)
+					.contentType(MediaType.APPLICATION_JSON))
+					.andExpect(status().isNotFound())
+					.andReturn();
+			String rt = result.getResponse().getContentAsString();
+			SuccessResponse response = gson.fromJson(rt,  SuccessResponse.class);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
