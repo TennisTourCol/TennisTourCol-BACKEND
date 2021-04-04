@@ -8,4 +8,5 @@ import org.springframework.stereotype.Service;
 public interface MatchService {
     Response getByRound (String round);
     Response create (Match match);
+    Response update(Match match);
 }

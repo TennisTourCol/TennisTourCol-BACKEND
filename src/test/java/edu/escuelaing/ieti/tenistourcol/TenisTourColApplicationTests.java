@@ -243,8 +243,7 @@ class TenisTourColApplicationTests {
 					.andReturn();
 			String rt = result.getResponse().getContentAsString();
 			SuccessResponse response = gson.fromJson(rt,  SuccessResponse.class);
-//			assertEquals("Not Found", response.getError());
-			System.out.println(response);
+			assertEquals("Se elimino el torneo Torneo prueba", response.getMessage());
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -295,7 +294,7 @@ class TenisTourColApplicationTests {
 			assertEquals(1, matchRepository.findAll().size());
 			Match match1 = gson.fromJson(response.getBody(), Match.class);
 			this.match = match1;
-			idMatch = match1.getId();
+  			idMatch = match1.getId();
 			roundMatch = match1.getRound();
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -365,6 +364,52 @@ class TenisTourColApplicationTests {
 			).andExpect(status().isNotFound()).andReturn();
 			String rt = result.getResponse().getContentAsString();
 			Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ss").create();
+			ExceptionResponse response = gson.fromJson(rt,  ExceptionResponse.class);
+			assertEquals("Not Found", response.getError());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	@Test
+	@Order(15)
+	public void T15UpdateMatch(){
+		try {
+			Match match = this.match;
+			match.setPlayer1("Brian");
+			match.toString();
+			Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ss").create();
+			String json = gson.toJson(match);
+			assertEquals("Toreto", matchRepository.findById(match.getId()).get().getPlayer1());
+			MvcResult result = this.mockMvc.perform(put("/match")
+					//.header("Authorization", token)
+					.contentType(MediaType.APPLICATION_JSON)
+					.content(json)).andExpect(status().isOk())
+					.andReturn();
+			String rt = result.getResponse().getContentAsString();
+			SuccessResponse response = gson.fromJson(rt,  SuccessResponse.class);
+			Match match1 = gson.fromJson(response.getBody(), Match.class);
+			assertEquals("Brian", match1.getPlayer1());
+			assertEquals("Brian", matchRepository.findById(match.getId()).get().getPlayer1());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	@Test
+	@Order(16)
+	public void T16UpdateMatchDebeFallar(){
+		try {
+			Match match = this.match;
+			match.setId("nbdjhdfksdhj");
+			Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ss").create();
+			String json = gson.toJson(match);
+			MvcResult result = this.mockMvc.perform(put("/match")
+					//.header("Authorization", token)
+					.contentType(MediaType.APPLICATION_JSON)
+					.content(json)).andExpect(status().isNotFound())
+					.andReturn();
+			String rt = result.getResponse().getContentAsString();
 			ExceptionResponse response = gson.fromJson(rt,  ExceptionResponse.class);
 			assertEquals("Not Found", response.getError());
 		} catch (Exception e) {
