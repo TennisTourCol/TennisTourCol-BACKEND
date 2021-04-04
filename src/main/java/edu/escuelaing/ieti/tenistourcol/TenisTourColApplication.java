@@ -25,7 +25,7 @@ public class TenisTourColApplication implements WebMvcConfigurer {
 
 		registry.addMapping("/**")
 				.allowedOrigins(origins)
-				.allowedMethods("POST", "GET");
+				.allowedMethods("POST", "GET", "PUT", "DELETE");
 	}
 
 	public @Bean MongoClient mongoClient() {

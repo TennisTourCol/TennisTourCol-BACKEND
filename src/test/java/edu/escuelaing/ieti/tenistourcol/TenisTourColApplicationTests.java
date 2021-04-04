@@ -9,6 +9,7 @@ import edu.escuelaing.ieti.tenistourcol.repository.MatchRepository;
 import edu.escuelaing.ieti.tenistourcol.repository.PlayerRepository;
 import edu.escuelaing.ieti.tenistourcol.repository.TournamentEntity;
 import edu.escuelaing.ieti.tenistourcol.repository.TournamentRepository;
+import edu.escuelaing.ieti.tenistourcol.service.MainView;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
@@ -30,6 +31,7 @@ import javax.validation.constraints.NotNull;
 import java.lang.reflect.Type;
 import java.math.BigInteger;
 import java.util.ArrayList;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
@@ -417,6 +419,7 @@ class TenisTourColApplicationTests {
 			e.printStackTrace();
 		}
 	}
+
 	@Test
 	@Order(17)
 	public void T17crearPlayer() {
@@ -448,14 +451,33 @@ class TenisTourColApplicationTests {
 			this.player = player1;
 			idPlayer = player1.getId();
 			System.out.println(idPlayer);
+
+
+	@Test
+	@Order(18)
+	public void T18ProbarMainView(){
+		MvcResult result = null;
+		Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ss").create();
+		SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+		String date = simpleDateFormat.format(new Date());
+		try {
+			result = this.mockMvc.perform(get("/mainview/"+date)
+					//.header("Authorization", token)
+					.contentType(MediaType.APPLICATION_JSON))
+					.andExpect(status().isOk())
+					.andReturn();
+			String rt = result.getResponse().getContentAsString();
+			SuccessResponse response = gson.fromJson(rt,  SuccessResponse.class);
+			assertEquals("Se encontraron los partidos de hoy", response.getMessage());
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
 
+
     @Test
-    @Order(18)
-    public void T18crearTorneo() {
+    @Order(19)
+    public void T19crearTorneo() {
         try {
             Tournament tournament = Tournament.builder()
                     .id("prueba2")
@@ -487,8 +509,8 @@ class TenisTourColApplicationTests {
     }
 
 	@Test
-	@Order(18)
-	public void T18setSchedule() {
+	@Order(20)
+	public void T20setSchedule() {
 		try {
 			Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ss").create();
 
@@ -501,6 +523,20 @@ class TenisTourColApplicationTests {
             System.out.println(response);
 			Player player1 = gson.fromJson(response.getBody(), Player.class);
             assertEquals(1, player1.getSchedule().size());
+	@Test
+	@Order(21)
+	public void T21DebeFallarMainView(){
+		MvcResult result = null;
+		Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ss").create();
+		String date = "unnd/ds/mj";
+		try {
+			result = this.mockMvc.perform(get("/mainview/"+date)
+					//.header("Authorization", token)
+					.contentType(MediaType.APPLICATION_JSON))
+					.andExpect(status().isNotFound())
+					.andReturn();
+			String rt = result.getResponse().getContentAsString();
+			SuccessResponse response = gson.fromJson(rt,  SuccessResponse.class);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
