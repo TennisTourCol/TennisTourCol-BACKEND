@@ -21,6 +21,8 @@ public class Player {
     @NotNull
     private String name, mail, apodo, liga, ciudad, description;
 
+    private List<String> schedule;
+
     private Integer imagen;
 
 
