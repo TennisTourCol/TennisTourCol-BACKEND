@@ -26,4 +26,14 @@ public class MatchEntity {
     private String court;
 
     private String round;
+
+    private int set1P1;
+
+    private int set2P2;
+
+    private int set1P2;
+
+    private int set2P1;
+
+    private String ganador;
 }

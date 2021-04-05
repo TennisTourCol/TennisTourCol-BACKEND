@@ -651,4 +651,105 @@ class TenisTourColApplicationTests {
 		}
 	}
 
+	@Test
+	@Order(29)
+	public void T29CreateMatch(){
+		try {
+			Match match = Match.builder()
+					.id("1")
+					.player1("David")
+					.player2("Manuel")
+					.court("15")
+					.round("16")
+					.build();
+			Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ss").create();
+			String json = gson.toJson(match);
+			assertEquals(1, matchRepository.findAll().size());
+			MvcResult result = this.mockMvc.perform(post("/match")
+					//.header("Authorization", token)
+					.contentType(MediaType.APPLICATION_JSON)
+					.content(json)).andExpect(status().isOk())
+					.andReturn();
+			String rt = result.getResponse().getContentAsString();
+			SuccessResponse response = gson.fromJson(rt,  SuccessResponse.class);
+			assertEquals(2, matchRepository.findAll().size());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	//{id}/resultado
+	@Test
+	@Order(30)
+	public void T30setMatchResult() {
+		try {
+			List<String> resultado = new ArrayList<>();
+			resultado.add("6");
+			resultado.add("6");
+			resultado.add("1");
+			resultado.add("0");
+			Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ss").create();
+			String json = gson.toJson(resultado);
+			MvcResult result = this.mockMvc.perform(post("/match/1/resultado")
+					//.header("Authorization", token)
+					.contentType(MediaType.APPLICATION_JSON)
+					.content(json)).andExpect(status().isOk())
+					.andReturn();
+			String rt = result.getResponse().getContentAsString();
+			SuccessResponse response = gson.fromJson(rt,  SuccessResponse.class);
+			Match match = gson.fromJson(response.getBody(), Match.class);
+			assertEquals("1", match.getId());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	@Test
+	@Order(31)
+	public void T31setMatchResultFAilData() {
+		try {
+			List<String> resultado = new ArrayList<>();
+			resultado.add("6");
+			resultado.add("4");
+			resultado.add("4");
+			resultado.add("6");
+			Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ss").create();
+			String json = gson.toJson(resultado);
+			MvcResult result = this.mockMvc.perform(post("/match/1/resultado")
+					//.header("Authorization", token)
+					.contentType(MediaType.APPLICATION_JSON)
+					.content(json)).andExpect(status().isNotFound())
+					.andReturn();
+			String rt = result.getResponse().getContentAsString();
+			ExceptionResponse response = gson.fromJson(rt,  ExceptionResponse.class);
+			assertEquals("Not Found", response.getError());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	@Test
+	@Order(32)
+	public void T31setMatchResultFAilId() {
+		try {
+			List<String> resultado = new ArrayList<>();
+			resultado.add("6");
+			resultado.add("4");
+			resultado.add("4");
+			resultado.add("6");
+			Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ss").create();
+			String json = gson.toJson(resultado);
+			MvcResult result = this.mockMvc.perform(post("/match/2/resultado")
+					//.header("Authorization", token)
+					.contentType(MediaType.APPLICATION_JSON)
+					.content(json)).andExpect(status().isNotFound())
+					.andReturn();
+			String rt = result.getResponse().getContentAsString();
+			ExceptionResponse response = gson.fromJson(rt,  ExceptionResponse.class);
+			assertEquals("Not Found", response.getError());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+
+
 }

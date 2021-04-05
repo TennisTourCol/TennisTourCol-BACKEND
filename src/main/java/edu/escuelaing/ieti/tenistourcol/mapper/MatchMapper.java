@@ -17,7 +17,11 @@ public class MatchMapper {
         matchEntity.setPlayer2(match.getPlayer2());
         matchEntity.setCourt(match.getCourt());
         matchEntity.setRound(match.getRound());
-
+        matchEntity.setSet1P1(match.getSet1P1());
+        matchEntity.setSet1P2(match.getSet1P2());
+        matchEntity.setSet2P1(match.getSet2P1());
+        matchEntity.setSet2P2(match.getSet2P2());
+        matchEntity.setGanador(match.getGanador());
         return matchEntity;
     }
 
@@ -30,7 +34,11 @@ public class MatchMapper {
         match.setPlayer2(matchEntity.getPlayer2());
         match.setCourt(matchEntity.getCourt());
         match.setRound(matchEntity.getRound());
-
+        match.setSet1P1(matchEntity.getSet1P1());
+        match.setSet1P2(matchEntity.getSet1P2());
+        match.setSet2P1(matchEntity.getSet2P1());
+        match.setSet2P2(matchEntity.getSet2P2());
+        match.setGanador(matchEntity.getGanador());
         return match;
     }
 }
