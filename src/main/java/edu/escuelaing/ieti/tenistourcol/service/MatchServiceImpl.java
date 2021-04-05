@@ -58,4 +58,29 @@ public class MatchServiceImpl implements MatchService{
             throw new NotFoundException("No se encontro el partido con id "+match.getId());
         }
     }
+
+    @Override
+    public Response setGanador(String id, int set1P1, int set2P1, int set1P2, int set2P2) {
+        Optional<MatchEntity> optMatch = matchRepository.findById(id);
+        if(optMatch.isPresent()){
+            MatchEntity matchEntity = optMatch.get();
+            matchEntity.setSet1P1(set1P1);
+            matchEntity.setSet2P1(set2P1);
+            matchEntity.setSet1P2(set1P2);
+            matchEntity.setSet2P2(set2P2);
+            if (matchEntity.getSet1P1()> matchEntity.getSet1P2() && matchEntity.getSet2P1()> matchEntity.getSet2P2()){
+                matchEntity.setGanador(matchEntity.getPlayer1());
+            }
+            else if(matchEntity.getSet1P1()< matchEntity.getSet1P2() && matchEntity.getSet2P1()< matchEntity.getSet2P2()){
+                matchEntity.setGanador(matchEntity.getPlayer2());
+            }
+            else{
+                throw new NotFoundException("El partido no tiene un resultado final, los datos de los sets estan mal "+ gson.toJson(MatchMapper.map(matchEntity)));
+            }
+            matchRepository.save(matchEntity);
+            return new SuccessResponse(new Date(), 200, "Se actualizo el partido " , gson.toJson(matchEntity));
+        } else {
+            throw new NotFoundException("No se encontro el partido con id "+ id);
+        }
+    }
 }

@@ -3,6 +3,7 @@ package edu.escuelaing.ieti.tenistourcol.model;
 import lombok.*;
 
 import javax.validation.constraints.NotNull;
+import java.util.List;
 
 @Builder
 @NoArgsConstructor
@@ -25,5 +26,13 @@ public class Match {
 
     @NotNull
     private String round;
+
+    private int set1P1;
+    private int set2P2;
+    private int set1P2;
+    private int set2P1;
+
+    private String ganador;
+
 
 }
