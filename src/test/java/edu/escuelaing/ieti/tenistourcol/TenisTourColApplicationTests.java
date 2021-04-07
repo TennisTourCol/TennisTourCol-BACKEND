@@ -790,12 +790,11 @@ class TenisTourColApplicationTests {
 	public void T34editTournamentErorr(){
 		try {
 			Tournament tournamentRemplazar = Tournament.builder()
-					.id("Error")
+					.id("prueba")
 					.nombre("Torneo Cambio")
 					.responsable("David")
 					.direccion("Tv 1 #2-3")
 					.ciudad("Cali")
-					.club("El club de Edicion")
 					.grado("3")
 					.categoria("20-22")
 					.precio(BigInteger.valueOf(10000))
@@ -808,11 +807,11 @@ class TenisTourColApplicationTests {
 			MvcResult result = this.mockMvc.perform(put("/tournament/editTorunament")
 					//.header("Authorization", token)
 					.contentType(MediaType.APPLICATION_JSON)
-					.content(json)).andExpect(status().isNotFound())
+					.content(json)).andExpect(status().isBadRequest())
 					.andReturn();
 			String rt = result.getResponse().getContentAsString();
 			ExceptionResponse response = gson.fromJson(rt,  ExceptionResponse.class);
-			assertEquals("Not Found", response.getError());
+			assertEquals("Bad Request", response.getError());
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

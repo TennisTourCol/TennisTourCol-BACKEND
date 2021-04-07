@@ -64,35 +64,18 @@ public class TournamentServiceImpl implements TournamentService{
         Optional<TournamentEntity> tourOpt= tournamentRepository.findById(tournament.getId());
         if(tourOpt.isPresent()){
             TournamentEntity tournamentEntity= tourOpt.get();
-            if(tournament.getNombre()!=""){
                 tournamentEntity.setName(tournament.getNombre());
-            }
-            if(tournament.getGrado()!=""){
                 tournamentEntity.setGrade(tournament.getGrado());
-            }
-            if(tournament.getDireccion()!=""){
                 tournamentEntity.setDirection(tournament.getDireccion());
-            }
-            if(tournament.getClub()!=""){
                 tournamentEntity.setClubSite(tournament.getClub());
-            }
-            if(tournament.getCiudad()!=""){
                 tournamentEntity.setCity(tournament.getCiudad());
-            }
-            if(!tournament.getFechaInicio().equals("")){
                 tournamentEntity.setStartDate(tournament.getFechaInicio());
-            }
-            if(!tournament.getFechaFin().equals("")){
                 tournamentEntity.setFinalDate(tournament.getFechaFin());
-            }
-            if(tournament.getHora()!=""){
                 tournamentEntity.setHour(tournament.getHora());
-            }
             tournamentRepository.save(tournamentEntity);
             return new SuccessResponse(new Date(), 200, "Se actualizo torneo " , gson.toJson(tournament));
         }else{
             throw new NotFoundException("No se encontro el torneo con id "+tournament.getId());
         }
-
     }
 }
