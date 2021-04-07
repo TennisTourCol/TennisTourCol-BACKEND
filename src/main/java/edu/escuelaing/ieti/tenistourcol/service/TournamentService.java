@@ -12,4 +12,5 @@ public interface TournamentService {
     public Response getById(String id);
     public Response createTournament(Tournament tournament);
     public Response deleteTournament(Tournament tournament);
+    public Response editTournament(Tournament tournament);
 }

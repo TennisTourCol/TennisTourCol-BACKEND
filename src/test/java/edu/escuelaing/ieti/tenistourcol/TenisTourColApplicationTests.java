@@ -750,6 +750,280 @@ class TenisTourColApplicationTests {
 		}
 	}
 
+	@Test
+	@Order(33)
+	public void T33editTournament(){
+		try {
+			Tournament tournamentRemplazar = Tournament.builder()
+					.id("prueba")
+					.nombre("Torneo Cambio")
+					.responsable("David")
+					.direccion("Tv 1 #2-3")
+					.ciudad("Cali")
+					.club("El club de Edicion")
+					.grado("3")
+					.categoria("20-22")
+					.precio(BigInteger.valueOf(10000))
+					.hora("8:00")
+					.fechaInicio(new Date())
+					.fechaFin(new Date())
+					.build();
+			Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ss").create();
+			String json = gson.toJson(tournamentRemplazar);
+			MvcResult result = this.mockMvc.perform(put("/tournament/editTorunament")
+					//.header("Authorization", token)
+					.contentType(MediaType.APPLICATION_JSON)
+					.content(json)).andExpect(status().isOk())
+					.andReturn();
+			String rt = result.getResponse().getContentAsString();
+			SuccessResponse response = gson.fromJson(rt,  SuccessResponse.class);
+			System.out.println(response);
+			Tournament tournament1 = gson.fromJson(response.getBody(), Tournament.class);
+			assertEquals("El club de Edicion", tournament1.getClub());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 
+	@Test
+	@Order(34)
+	public void T34editTournamentErorr(){
+		try {
+			Tournament tournamentRemplazar = Tournament.builder()
+					.id("prueba")
+					.nombre("Torneo Cambio")
+					.responsable("David")
+					.direccion("Tv 1 #2-3")
+					.ciudad("Cali")
+					.grado("3")
+					.categoria("20-22")
+					.precio(BigInteger.valueOf(10000))
+					.hora("8:00")
+					.fechaInicio(new Date())
+					.fechaFin(new Date())
+					.build();
+			Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ss").create();
+			String json = gson.toJson(tournamentRemplazar);
+			MvcResult result = this.mockMvc.perform(put("/tournament/editTorunament")
+					//.header("Authorization", token)
+					.contentType(MediaType.APPLICATION_JSON)
+					.content(json)).andExpect(status().isBadRequest())
+					.andReturn();
+			String rt = result.getResponse().getContentAsString();
+			ExceptionResponse response = gson.fromJson(rt,  ExceptionResponse.class);
+			assertEquals("Bad Request", response.getError());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	@Test
+	@Order(35)
+	public void T35editTournamentNombre(){
+		try {
+			Tournament tournamentRemplazar = Tournament.builder()
+					.id("prueba")
+					.nombre("Torneo Cambio 2")
+					.responsable("David")
+					.direccion("Tv 1 #2-3")
+					.ciudad("Cali")
+					.club("El club de Edicion")
+					.grado("3")
+					.categoria("20-22")
+					.precio(BigInteger.valueOf(10000))
+					.hora("8:00")
+					.fechaInicio(new Date())
+					.fechaFin(new Date())
+					.build();
+			Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ss").create();
+			String json = gson.toJson(tournamentRemplazar);
+			MvcResult result = this.mockMvc.perform(put("/tournament/editTorunament")
+					//.header("Authorization", token)
+					.contentType(MediaType.APPLICATION_JSON)
+					.content(json)).andExpect(status().isOk())
+					.andReturn();
+			String rt = result.getResponse().getContentAsString();
+			SuccessResponse response = gson.fromJson(rt,  SuccessResponse.class);
+			System.out.println(response);
+			Tournament tournament1 = gson.fromJson(response.getBody(), Tournament.class);
+			assertEquals("Torneo Cambio 2", tournament1.getNombre());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	@Test
+	@Order(36)
+	public void T36editTournamentGrado(){
+		try {
+			Tournament tournamentRemplazar = Tournament.builder()
+					.id("prueba")
+					.nombre("Torneo Cambio 2")
+					.responsable("David")
+					.direccion("Tv 1 #2-3")
+					.ciudad("Cali")
+					.club("El club de Edicion")
+					.grado("1")
+					.categoria("20-22")
+					.precio(BigInteger.valueOf(10000))
+					.hora("8:00")
+					.fechaInicio(new Date())
+					.fechaFin(new Date())
+					.build();
+			Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ss").create();
+			String json = gson.toJson(tournamentRemplazar);
+			MvcResult result = this.mockMvc.perform(put("/tournament/editTorunament")
+					//.header("Authorization", token)
+					.contentType(MediaType.APPLICATION_JSON)
+					.content(json)).andExpect(status().isOk())
+					.andReturn();
+			String rt = result.getResponse().getContentAsString();
+			SuccessResponse response = gson.fromJson(rt,  SuccessResponse.class);
+			System.out.println(response);
+			Tournament tournament1 = gson.fromJson(response.getBody(), Tournament.class);
+			assertEquals("1", tournament1.getGrado());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	@Test
+	@Order(37)
+	public void T37editTournamentDireccion(){
+		try {
+			Tournament tournamentRemplazar = Tournament.builder()
+					.id("prueba")
+					.nombre("Torneo Cambio 2")
+					.responsable("David")
+					.direccion("Calle 221 club bogota")
+					.ciudad("Cali")
+					.club("El club de Edicion")
+					.grado("1")
+					.categoria("20-22")
+					.precio(BigInteger.valueOf(10000))
+					.hora("8:00")
+					.fechaInicio(new Date())
+					.fechaFin(new Date())
+					.build();
+			Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ss").create();
+			String json = gson.toJson(tournamentRemplazar);
+			MvcResult result = this.mockMvc.perform(put("/tournament/editTorunament")
+					//.header("Authorization", token)
+					.contentType(MediaType.APPLICATION_JSON)
+					.content(json)).andExpect(status().isOk())
+					.andReturn();
+			String rt = result.getResponse().getContentAsString();
+			SuccessResponse response = gson.fromJson(rt,  SuccessResponse.class);
+			System.out.println(response);
+			Tournament tournament1 = gson.fromJson(response.getBody(), Tournament.class);
+			assertEquals("Calle 221 club bogota", tournament1.getDireccion());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	@Test
+	@Order(38)
+	public void T38editTournamentClub(){
+		try {
+			Tournament tournamentRemplazar = Tournament.builder()
+					.id("prueba")
+					.nombre("Torneo Cambio 2")
+					.responsable("David")
+					.direccion("Calle 221 club bogota")
+					.ciudad("Cali")
+					.club("El club de Edicion 2")
+					.grado("1")
+					.categoria("20-22")
+					.precio(BigInteger.valueOf(10000))
+					.hora("8:00")
+					.fechaInicio(new Date())
+					.fechaFin(new Date())
+					.build();
+			Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ss").create();
+			String json = gson.toJson(tournamentRemplazar);
+			MvcResult result = this.mockMvc.perform(put("/tournament/editTorunament")
+					//.header("Authorization", token)
+					.contentType(MediaType.APPLICATION_JSON)
+					.content(json)).andExpect(status().isOk())
+					.andReturn();
+			String rt = result.getResponse().getContentAsString();
+			SuccessResponse response = gson.fromJson(rt,  SuccessResponse.class);
+			System.out.println(response);
+			Tournament tournament1 = gson.fromJson(response.getBody(), Tournament.class);
+			assertEquals("El club de Edicion 2", tournament1.getClub());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	@Test
+	@Order(39)
+	public void T39editTournamentCiudad(){
+		try {
+			Tournament tournamentRemplazar = Tournament.builder()
+					.id("prueba")
+					.nombre("Torneo Cambio 2")
+					.responsable("David")
+					.direccion("Calle 221 club bogota")
+					.ciudad("Bogota")
+					.club("El club de Edicion 2")
+					.grado("1")
+					.categoria("20-22")
+					.precio(BigInteger.valueOf(10000))
+					.hora("8:00")
+					.fechaInicio(new Date())
+					.fechaFin(new Date())
+					.build();
+			Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ss").create();
+			String json = gson.toJson(tournamentRemplazar);
+			MvcResult result = this.mockMvc.perform(put("/tournament/editTorunament")
+					//.header("Authorization", token)
+					.contentType(MediaType.APPLICATION_JSON)
+					.content(json)).andExpect(status().isOk())
+					.andReturn();
+			String rt = result.getResponse().getContentAsString();
+			SuccessResponse response = gson.fromJson(rt,  SuccessResponse.class);
+			System.out.println(response);
+			Tournament tournament1 = gson.fromJson(response.getBody(), Tournament.class);
+			assertEquals("Bogota", tournament1.getCiudad());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	@Test
+	@Order(40)
+	public void T49editTournamentFechaInicio(){
+		try {
+			Tournament tournamentRemplazar = Tournament.builder()
+					.id("prueba")
+					.nombre("Torneo Cambio 2")
+					.responsable("David")
+					.direccion("Calle 221 club bogota")
+					.ciudad("Bogota")
+					.club("El club de Edicion 2")
+					.grado("1")
+					.categoria("20-22")
+					.precio(BigInteger.valueOf(10000))
+					.hora("14:00")
+					.fechaInicio(new Date())
+					.fechaFin(new Date())
+					.build();
+			Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ss").create();
+			String json = gson.toJson(tournamentRemplazar);
+			MvcResult result = this.mockMvc.perform(put("/tournament/editTorunament")
+					//.header("Authorization", token)
+					.contentType(MediaType.APPLICATION_JSON)
+					.content(json)).andExpect(status().isOk())
+					.andReturn();
+			String rt = result.getResponse().getContentAsString();
+			SuccessResponse response = gson.fromJson(rt,  SuccessResponse.class);
+			System.out.println(response);
+			Tournament tournament1 = gson.fromJson(response.getBody(), Tournament.class);
+			assertEquals("14:00", tournament1.getHora());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 
 }

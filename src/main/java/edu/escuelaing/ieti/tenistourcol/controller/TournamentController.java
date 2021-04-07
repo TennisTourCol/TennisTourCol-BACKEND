@@ -37,4 +37,9 @@ public class TournamentController {
     public ResponseEntity<Response> delete(@Valid @RequestBody Tournament tournament) {
         return ResponseEntity.ok(tournamentService.deleteTournament(tournament));
     }
+
+    @PutMapping(value="/editTorunament")
+    public ResponseEntity<Response> editTournament(@Valid @RequestBody Tournament tournament){
+        return ResponseEntity.ok(tournamentService.editTournament(tournament));
+    }
 }

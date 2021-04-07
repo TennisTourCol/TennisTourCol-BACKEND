@@ -59,4 +59,23 @@ public class TournamentServiceImpl implements TournamentService{
         tournamentRepository.delete(TournamentMapper.map(tournament));
         return new SuccessResponse(new Date(), 200, "Se elimino el torneo "+tournament.getNombre(), gson.toJson(TournamentMapper.map(tournament)));
     }
+    @Override
+    public Response editTournament(Tournament tournament) {
+        Optional<TournamentEntity> tourOpt= tournamentRepository.findById(tournament.getId());
+        if(tourOpt.isPresent()){
+            TournamentEntity tournamentEntity= tourOpt.get();
+                tournamentEntity.setName(tournament.getNombre());
+                tournamentEntity.setGrade(tournament.getGrado());
+                tournamentEntity.setDirection(tournament.getDireccion());
+                tournamentEntity.setClubSite(tournament.getClub());
+                tournamentEntity.setCity(tournament.getCiudad());
+                tournamentEntity.setStartDate(tournament.getFechaInicio());
+                tournamentEntity.setFinalDate(tournament.getFechaFin());
+                tournamentEntity.setHour(tournament.getHora());
+            tournamentRepository.save(tournamentEntity);
+            return new SuccessResponse(new Date(), 200, "Se actualizo torneo " , gson.toJson(tournament));
+        }else{
+            throw new NotFoundException("No se encontro el torneo con id "+tournament.getId());
+        }
+    }
 }
