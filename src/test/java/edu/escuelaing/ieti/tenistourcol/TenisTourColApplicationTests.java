@@ -5,10 +5,7 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 import edu.escuelaing.ieti.tenistourcol.mapper.TournamentMapper;
 import edu.escuelaing.ieti.tenistourcol.model.*;
-import edu.escuelaing.ieti.tenistourcol.repository.MatchRepository;
-import edu.escuelaing.ieti.tenistourcol.repository.PlayerRepository;
-import edu.escuelaing.ieti.tenistourcol.repository.TournamentEntity;
-import edu.escuelaing.ieti.tenistourcol.repository.TournamentRepository;
+import edu.escuelaing.ieti.tenistourcol.repository.*;
 import edu.escuelaing.ieti.tenistourcol.service.MainView;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Order;
@@ -57,12 +54,17 @@ class TenisTourColApplicationTests {
 	private PlayerRepository playerRepository;
 
 	@Autowired
+	private NotificationRepository notificationRepository;
+
+	@Autowired
 	private MatchRepository matchRepository;
 
 	private static String idTournament = "";
+	private static String idNotification = "";
 	private static String idPlayer = "";
 
 	private static Tournament tournament;
+	private static Notification notification;
 	private static Player player;
 	private static Match match;
 
@@ -1360,6 +1362,134 @@ class TenisTourColApplicationTests {
 			ExceptionResponse response2 = gson.fromJson(rt2,  ExceptionResponse.class);
 			assertEquals("Bad Request", response2.getError());
 
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	@Test
+	@Order(51)
+	public void T51CreateNotification(){
+		try {
+			Notification  notification = Notification.builder()
+					.id("1")
+					.playerId("1")
+					.mailPlayer("david@gmail.com")
+					.tournament("Ascenos Verdiery")
+					.date(new Date())
+					.build();
+			Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ss").create();
+			String json = gson.toJson(notification);
+			assertEquals(0,notificationRepository.findAll().size());
+			MvcResult result = this.mockMvc.perform(post("/notification")
+					//.header("Authorization", token)
+					.contentType(MediaType.APPLICATION_JSON)
+					.content(json)).andExpect(status().isOk())
+					.andReturn();
+			String rt = result.getResponse().getContentAsString();
+			SuccessResponse response = gson.fromJson(rt,  SuccessResponse.class);
+			assertEquals(1, notificationRepository.findAll().size());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	@Test
+	@Order(52)
+	public void T52NotificationByPlayer() {
+		try {
+			MvcResult result = this.mockMvc.perform(get("/notification/"+"1")
+					//.header("Authorization", token)
+					.contentType(MediaType.APPLICATION_JSON)
+			).andExpect(status().isOk()).andReturn();
+			String rt = result.getResponse().getContentAsString();
+			Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ss").create();
+			SuccessResponse response = gson.fromJson(rt,  SuccessResponse.class);
+			Notification[] notifications = gson.fromJson(response.getBody(), Notification[].class);
+			assertEquals("1", notifications[0].getPlayerId());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	@Test
+	@Order(53)
+	public void T53NotificationByPlayerDebeFallar() {
+		try {
+			MvcResult result = this.mockMvc.perform(get("/notification/"+"2")
+					//.header("Authorization", token)
+					.contentType(MediaType.APPLICATION_JSON)
+			).andExpect(status().isNotFound()).andReturn();
+			String rt = result.getResponse().getContentAsString();
+			Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ss").create();
+			SuccessResponse response = gson.fromJson(rt,  SuccessResponse.class);
+			Notification[] notifications = gson.fromJson(response.getBody(), Notification[].class);
+			assertEquals("1", notifications[0].getPlayerId());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	@Test
+	@Order(54)
+	public void T54CreateNotificationDebeFallar(){
+		try {
+			Notification  notification = Notification.builder()
+					.id("1")
+					.mailPlayer("david@gmail.com")
+					.tournament("Ascenos Verdiery")
+					.date(new Date())
+					.build();
+			Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ss").create();
+			String json = gson.toJson(notification);
+			MvcResult result = this.mockMvc.perform(post("/notification")
+					//.header("Authorization", token)
+					.contentType(MediaType.APPLICATION_JSON)
+					.content(json)).andExpect(status().isBadRequest())
+					.andReturn();
+			String rt = result.getResponse().getContentAsString();
+			ExceptionResponse response = gson.fromJson(rt,  ExceptionResponse.class);
+			assertEquals("Bad Request", response.getError());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	@Test
+	@Order(55)
+	public void T55CreateNotificationDos(){
+		try {
+			Notification  notification = Notification.builder()
+					.id("2")
+					.playerId("2")
+					.mailPlayer("juan@gmail.com")
+					.tournament("Ascenos Verdiery")
+					.date(new Date())
+					.build();
+			Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ss").create();
+			String json = gson.toJson(notification);
+			MvcResult result = this.mockMvc.perform(post("/notification")
+					//.header("Authorization", token)
+					.contentType(MediaType.APPLICATION_JSON)
+					.content(json)).andExpect(status().isOk())
+					.andReturn();
+			String rt = result.getResponse().getContentAsString();
+			SuccessResponse response = gson.fromJson(rt,  SuccessResponse.class);
+			assertEquals(2, notificationRepository.findAll().size());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	@Test
+	@Order(56)
+	public void T56NotificacionPorIdPlayerDebeRetornarNull() {
+		try {
+			MvcResult result = this.mockMvc.perform(get("/notification/"+"23")
+					//.header("Authorization", token)
+					.contentType(MediaType.APPLICATION_JSON)
+			).andExpect(status().isNotFound()).andReturn();
+			String rt = result.getResponse().getContentAsString();
+			Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ss").create();
+			ExceptionResponse response = gson.fromJson(rt,  ExceptionResponse.class);
+			assertEquals("Not Found", response.getError());
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
