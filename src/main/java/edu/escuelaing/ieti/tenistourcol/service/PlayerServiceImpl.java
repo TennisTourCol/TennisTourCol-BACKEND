@@ -64,29 +64,16 @@ public class PlayerServiceImpl implements PlayerService{
         Optional<PlayerEntity> tmp = playerRepository.findById(player.getId());
         if(tmp.isPresent()){
             PlayerEntity playerEntity = tmp.get();
-            if(!player.getApodo().equals("")){playerEntity.setApodo(player.getApodo());}
-            if(!player.getMail().equals("")){playerEntity.setMail(player.getMail());}
-            if(!player.getCiudad().equals("")){playerEntity.setCiudad(player.getCiudad());}
-            if(!player.getLiga().equals("")){playerEntity.setLiga(player.getLiga());}
-            if(!player.getDescription().equals("")){playerEntity.setDescription(player.getDescription());}
-            if(!player.getImagen().equals("")){playerEntity.setImagen(player.getImagen());}
+            playerEntity.setApodo(player.getApodo());
+            playerEntity.setMail(player.getMail());
+            playerEntity.setCiudad(player.getCiudad());
+            playerEntity.setLiga(player.getLiga());
+            playerEntity.setDescription(player.getDescription());
+            playerEntity.setImagen(player.getImagen());
             playerRepository.save(playerEntity);
             return new SuccessResponse(new Date(), 200, "Se actualizaron los datos del usuario " , gson.toJson(player));
         }else{
             throw new NotFoundException("No se encontró el jugador con el id"+player.getId());
-        }
-    }
-
-    @Override
-    public Response updateRanking(String id, String puntos) {
-        Optional<PlayerEntity> tmp = playerRepository.findById(id);
-        if(tmp.isPresent()){
-            PlayerEntity playerEntity = tmp.get();
-            //playerEntity.setPuntos(puntos);
-            playerRepository.save(playerEntity);
-            return new SuccessResponse(new Date(), 200, "Se actualizaron los datos del usuario:" , id);
-        }else{
-            throw new NotFoundException("No se encontró el jugador con el id"+id);
         }
     }
 
