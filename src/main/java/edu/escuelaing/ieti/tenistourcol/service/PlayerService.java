@@ -10,4 +10,6 @@ public interface PlayerService {
     Response createPlayer(Player player);
     Response getUserByIdAndTournament(String id, String idT);
     Response deleteTournament(String id, String idT);
+    Response updatePlayerInfo(Player player);
+    Response updateRanking(String id, String puntos);
 }

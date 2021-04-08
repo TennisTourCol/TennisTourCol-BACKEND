@@ -49,5 +49,9 @@ public class PlayerController {
     public ResponseEntity<Response> delete(@PathVariable String id, @PathVariable String idT) {
         return ResponseEntity.ok(playerService.deleteTournament(id, idT));
     }
+    @PostMapping(value = "/updatePlayer")
+    public ResponseEntity<Response> updateInfoPlayer(@Valid @RequestBody Player player) {
+        return ResponseEntity.ok(playerService.updatePlayerInfo(player));
+    }
 
 }
