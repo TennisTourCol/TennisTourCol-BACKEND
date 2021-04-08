@@ -87,4 +87,16 @@ public class TournamentServiceImpl implements TournamentService{
             throw new NotFoundException("No se encontró ningún torneo con el nombre "+name);
         }
     }
+
+    @Override
+    public Response getByGrade(String grade) {
+        List<Tournament> tournaments = new ArrayList<>();
+        List<TournamentEntity> tournamentEntities = tournamentRepository.findByGrade(grade);
+        tournamentEntities.forEach(tournamentEntity -> tournaments.add(TournamentMapper.map(tournamentEntity)));
+        if(tournaments.size()>0) {
+            return new SuccessResponse(new Date(), 200, "Se encontraron los torneos", gson.toJson(tournaments));
+        } else {
+            throw new NotFoundException("No se encontró ningún torneo con grado " + grade);
+        }
+    }
 }

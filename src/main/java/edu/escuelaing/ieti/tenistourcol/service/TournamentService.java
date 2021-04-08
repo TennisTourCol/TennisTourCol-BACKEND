@@ -14,4 +14,6 @@ public interface TournamentService {
     public Response deleteTournament(Tournament tournament);
     public Response editTournament(Tournament tournament);
     public Response getByName(String name);
+    public Response getByGrade(String grade);
+
 }
