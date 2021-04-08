@@ -1552,6 +1552,25 @@ class TenisTourColApplicationTests {
 			e.printStackTrace();
 		}
 	}
+	@Test
+	@Order(59)
+	public void T59ObtenerJugadoresPorRanking() {
+		try {
+
+			MvcResult result = this.mockMvc.perform(get("/ranking/players/1")
+					.contentType(MediaType.APPLICATION_JSON)
+					.accept(MediaType.APPLICATION_JSON)).andExpect(status().isNotFound())
+					.andReturn();
+			String rt = result.getResponse().getContentAsString();
+			Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ss").create();
+			ExceptionResponse response = gson.fromJson(rt,  ExceptionResponse.class);
+			assertEquals("Not Found", response.getError());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+
 
 
 
