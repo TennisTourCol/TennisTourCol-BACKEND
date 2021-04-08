@@ -1003,7 +1003,7 @@ class TenisTourColApplicationTests {
 		try {
 			Tournament tournamentRemplazar = Tournament.builder()
 					.id("prueba")
-					.nombre("Torneo Cambio 2")
+					.nombre("TorneoCambio2")
 					.responsable("David")
 					.direccion("Calle 221 club bogota")
 					.ciudad("Bogota")
@@ -1587,8 +1587,41 @@ class TenisTourColApplicationTests {
 		}
 	}
 
+	@Test
+	@Order(61)
+	public void T61getTorneoPorNombre(){
+		try {
+			MvcResult result = this.mockMvc.perform(get("/tournament/name/"+"TorneoCambio2")
+					//.header("Authorization", token)
+					.contentType(MediaType.APPLICATION_JSON)
+			).andExpect(status().isOk()).andReturn();
+			String rt = result.getResponse().getContentAsString();
+			Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ss").create();
+			SuccessResponse response = gson.fromJson(rt,  SuccessResponse.class);
+			Tournament tournament = gson.fromJson(response.getBody(), Tournament.class);
+			assertEquals("TorneoCambio2", tournament.getNombre());;
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 
+	@Test
+	@Order(62)
+	public void T62getTorneoPorNombreDebeFallar() {
+		try {
+			Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ss").create();
 
+			MvcResult result = this.mockMvc.perform(get("/tournament/name/"+"Torneo Cambio")
+					.contentType(MediaType.APPLICATION_JSON)
+					.accept(MediaType.APPLICATION_JSON)).andExpect(status().isNotFound())
+					.andReturn();
+			String rt = result.getResponse().getContentAsString();
+			ExceptionResponse response = gson.fromJson(rt,  ExceptionResponse.class);
+			assertEquals("Not Found", response.getError());
 
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 
 }

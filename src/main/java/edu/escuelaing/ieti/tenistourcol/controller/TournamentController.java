@@ -42,4 +42,8 @@ public class TournamentController {
     public ResponseEntity<Response> editTournament(@Valid @RequestBody Tournament tournament){
         return ResponseEntity.ok(tournamentService.editTournament(tournament));
     }
+    @GetMapping(value = "/name/{nombreToneo}")
+    public ResponseEntity<Response> getByNameTournament(@PathVariable String nombreToneo){
+        return ResponseEntity.ok(tournamentService.getByName(nombreToneo));
+    }
 }

@@ -78,4 +78,13 @@ public class TournamentServiceImpl implements TournamentService{
             throw new NotFoundException("No se encontro el torneo con id "+tournament.getId());
         }
     }
+    @Override
+    public Response getByName(String name) {
+        Optional<TournamentEntity> optTournament = tournamentRepository.findByName(name);
+        if(optTournament.isPresent()) {
+            return new SuccessResponse(new Date(), 200, "Se encontraron los torneos", gson.toJson(TournamentMapper.map(optTournament.get())));
+        } else {
+            throw new NotFoundException("No se encontró ningún torneo con el nombre "+name);
+        }
+    }
 }
