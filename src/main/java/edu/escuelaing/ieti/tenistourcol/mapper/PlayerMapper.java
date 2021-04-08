@@ -9,7 +9,6 @@ public class PlayerMapper {
 
     public static PlayerEntity map(final Player player) {
 
-        //String name, mail, apodo, liga, ciudad, description;
         final PlayerEntity playerEntity = new PlayerEntity();
 
         playerEntity.setId(player.getId());
