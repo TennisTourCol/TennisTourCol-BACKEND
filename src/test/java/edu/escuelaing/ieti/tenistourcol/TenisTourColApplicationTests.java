@@ -1554,7 +1554,7 @@ class TenisTourColApplicationTests {
 	}
 	@Test
 	@Order(59)
-	public void T59ObtenerJugadoresPorRanking() {
+	public void T59ObtenerJugadoresPorRankingDeFallar() {
 		try {
 
 			MvcResult result = this.mockMvc.perform(get("/ranking/players/1")
@@ -1565,6 +1565,23 @@ class TenisTourColApplicationTests {
 			Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ss").create();
 			ExceptionResponse response = gson.fromJson(rt,  ExceptionResponse.class);
 			assertEquals("Not Found", response.getError());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	@Test
+	@Order(60)
+	public void T60btenerRankingPorId() {
+		try {
+			Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ss").create();
+			MvcResult result = this.mockMvc.perform(get("/ranking/0")
+					.contentType(MediaType.APPLICATION_JSON)
+					.accept(MediaType.APPLICATION_JSON)).andExpect(status().isOk())
+					.andReturn();
+			String rt = result.getResponse().getContentAsString();
+			SuccessResponse response = gson.fromJson(rt,  SuccessResponse.class);
+			Ranking ranking  = gson.fromJson(response.getBody(), Ranking.class);
+			assertEquals("18 Masc S", ranking.getNombre());
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
