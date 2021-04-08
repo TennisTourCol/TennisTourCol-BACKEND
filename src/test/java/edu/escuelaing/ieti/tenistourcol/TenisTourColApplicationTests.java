@@ -59,6 +59,9 @@ class TenisTourColApplicationTests {
 	@Autowired
 	private MatchRepository matchRepository;
 
+	@Autowired
+	private RankingRepository rankingRepository;
+
 	private static String idTournament = "";
 	private static String idNotification = "";
 	private static String idPlayer = "";
@@ -1494,4 +1497,63 @@ class TenisTourColApplicationTests {
 			e.printStackTrace();
 		}
 	}
+
+	@Test
+	@Order(57)
+	public void T57CrearRanking(){
+		try {
+			MvcResult result = this.mockMvc.perform(get("/player/1")
+					.contentType(MediaType.APPLICATION_JSON)
+			).andExpect(status().isOk()).andReturn();
+			String rt = result.getResponse().getContentAsString();
+			Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ss").create();
+			SuccessResponse response = gson.fromJson(rt,  SuccessResponse.class);
+			Player player = gson.fromJson(response.getBody(), Player.class);
+			Player player2 = gson.fromJson(response.getBody(), Player.class);
+			List<Player> jugadores= new ArrayList<>();
+			jugadores.add(player);
+			jugadores.add(player2);
+
+			Ranking ranking = Ranking.builder()
+					.id("0")
+					.nombre("18 Masc S")
+					.jugadores(jugadores)
+					.build();
+			Gson gson2 = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ss").create();
+			String json = gson2.toJson(ranking);
+			assertEquals(0, rankingRepository.findAll().size());
+			MvcResult result2 = this.mockMvc.perform(post("/ranking")
+					.contentType(MediaType.APPLICATION_JSON)
+					.content(json)).andExpect(status().isOk())
+					.andReturn();
+			String rt2 = result2.getResponse().getContentAsString();
+			SuccessResponse response2 = gson2.fromJson(rt2,  SuccessResponse.class);
+			assertEquals(1, rankingRepository.findAll().size());
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	@Test
+	@Order(58)
+	public void T58ObtenerJugadoresPorRanking() {
+		try {
+			Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ss").create();
+
+			MvcResult result = this.mockMvc.perform(get("/ranking/players/1")
+					.contentType(MediaType.APPLICATION_JSON)
+					.accept(MediaType.APPLICATION_JSON)).andExpect(status().isOk())
+					.andReturn();
+			String rt = result.getResponse().getContentAsString();
+			SuccessResponse response = gson.fromJson(rt,  SuccessResponse.class);
+			Player[] jugadores = gson.fromJson(response.getBody(), Player[].class);
+			System.out.println(jugadores);
+			assertEquals(2, jugadores.length);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+
+
 }
