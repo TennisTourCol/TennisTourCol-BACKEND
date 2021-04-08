@@ -1540,14 +1540,13 @@ class TenisTourColApplicationTests {
 		try {
 			Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ss").create();
 
-			MvcResult result = this.mockMvc.perform(get("/ranking/players/1")
+			MvcResult result = this.mockMvc.perform(get("/ranking/players/0")
 					.contentType(MediaType.APPLICATION_JSON)
 					.accept(MediaType.APPLICATION_JSON)).andExpect(status().isOk())
 					.andReturn();
 			String rt = result.getResponse().getContentAsString();
 			SuccessResponse response = gson.fromJson(rt,  SuccessResponse.class);
 			Player[] jugadores = gson.fromJson(response.getBody(), Player[].class);
-			System.out.println(jugadores);
 			assertEquals(2, jugadores.length);
 		} catch (Exception e) {
 			e.printStackTrace();
