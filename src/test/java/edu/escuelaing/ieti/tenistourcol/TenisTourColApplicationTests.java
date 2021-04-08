@@ -1624,4 +1624,42 @@ class TenisTourColApplicationTests {
 		}
 	}
 
+	@Test
+	@Order(63)
+	public void T63FindTournamentbyGrade() {
+		try {
+			MvcResult result = this.mockMvc.perform(get("/tournament/grade/1")
+					//.header("Authorization", token)
+					.contentType(MediaType.APPLICATION_JSON)
+					.accept(MediaType.APPLICATION_JSON)).andExpect(status().isOk())
+					.andReturn();
+			String rt = result.getResponse().getContentAsString();
+			Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ss").create();
+			SuccessResponse response = gson.fromJson(rt, SuccessResponse.class);
+			Tournament[] tournaments = gson.fromJson(response.getBody(), Tournament[].class);
+			assertEquals("1", tournaments[0].getGrado());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	@Test
+	@Order(64)
+	public void T64FindTournamentbyGradeError() {
+		try {
+			MvcResult result = this.mockMvc.perform(get("/tournament/grade/8")
+					//.header("Authorization", token)
+					.contentType(MediaType.APPLICATION_JSON)
+					.accept(MediaType.APPLICATION_JSON)).andExpect(status().isNotFound())
+					.andReturn();
+			String rt = result.getResponse().getContentAsString();
+			Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ss").create();
+			ExceptionResponse response = gson.fromJson(rt,  ExceptionResponse.class);
+			assertEquals("Not Found", response.getError());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+
 }

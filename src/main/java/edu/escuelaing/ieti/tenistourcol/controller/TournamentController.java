@@ -46,4 +46,9 @@ public class TournamentController {
     public ResponseEntity<Response> getByNameTournament(@PathVariable String nombreToneo){
         return ResponseEntity.ok(tournamentService.getByName(nombreToneo));
     }
+
+    @GetMapping(value = "/grade/{grade}")
+    public ResponseEntity<Response> getByGrade(@PathVariable String grade) {
+        return ResponseEntity.ok(tournamentService.getByGrade(grade));
+    }
 }
