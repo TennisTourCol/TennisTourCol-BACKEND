@@ -2,6 +2,7 @@ package edu.escuelaing.ieti.tenistourcol.controller;
 
 import edu.escuelaing.ieti.tenistourcol.model.Player;
 import edu.escuelaing.ieti.tenistourcol.model.Response;
+import edu.escuelaing.ieti.tenistourcol.model.Tournament;
 import edu.escuelaing.ieti.tenistourcol.service.PlayerService;
 import edu.escuelaing.ieti.tenistourcol.service.TournamentService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,9 +40,14 @@ public class PlayerController {
         return ResponseEntity.ok(playerService.createPlayer(player));
     }
 
-    @GetMapping(value = "/{id}/addTournament/{idT}")
+    @GetMapping(value = "/{id}/tournament/{idT}")
     public ResponseEntity<Response> getByIdAndTournament(@PathVariable String id, @PathVariable String idT){
         return ResponseEntity.ok(playerService.getUserByIdAndTournament(id, idT));
+    }
+
+    @DeleteMapping(value = "/{id}/tournament/{idT}")
+    public ResponseEntity<Response> delete(@PathVariable String id, @PathVariable String idT) {
+        return ResponseEntity.ok(playerService.deleteTournament(id, idT));
     }
 
 }
