@@ -1079,4 +1079,289 @@ class TenisTourColApplicationTests {
 			e.printStackTrace();
 		}
 	}
+	@Test
+	@Order(44)
+	public void T52ActualizarEmailJugador(){
+		try{
+			MvcResult result = this.mockMvc.perform(get("/player/1")
+					//.header("Authorization", token)
+					.contentType(MediaType.APPLICATION_JSON)
+			).andExpect(status().isOk()).andReturn();
+			String rt = result.getResponse().getContentAsString();
+			Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ss").create();
+			SuccessResponse response = gson.fromJson(rt,  SuccessResponse.class);
+			Player player = gson.fromJson(response.getBody(), Player.class);
+
+			Player tmp = Player.builder()
+					.id("1")
+					.name("player prueba")
+					.mail("cesar@mail.com")
+					.apodo("prueba")
+					.liga("Bogota")
+					.ciudad("Bogota")
+					.description("nada")
+					.imagen(23)
+					.schedule(player.getSchedule())
+					.build();
+			Gson gson2 = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ss").create();
+			String json = gson2.toJson(tmp);
+			MvcResult result2 = this.mockMvc.perform(post("/player/updatePlayer")
+					//.header("Authorization", token)
+					.contentType(MediaType.APPLICATION_JSON)
+					.content(json)).andExpect(status().isOk())
+					.andReturn();
+			String rt2 = result2.getResponse().getContentAsString();
+			SuccessResponse response2 = gson2.fromJson(rt2,  SuccessResponse.class);
+			System.out.println("Holaaaaaaaaaaaaaa"+response2);
+			Player player1 = gson.fromJson(response2.getBody(), Player.class);
+			assertEquals("cesar@mail.com", player1.getMail());
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	@Test
+	@Order(45)
+	public void T53ActualizarApodoJugador(){
+		try{
+			MvcResult result = this.mockMvc.perform(get("/player/1")
+					//.header("Authorization", token)
+					.contentType(MediaType.APPLICATION_JSON)
+			).andExpect(status().isOk()).andReturn();
+			String rt = result.getResponse().getContentAsString();
+			Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ss").create();
+			SuccessResponse response = gson.fromJson(rt,  SuccessResponse.class);
+			Player player = gson.fromJson(response.getBody(), Player.class);
+
+			Player tmp = Player.builder()
+					.id("1")
+					.name("player prueba")
+					.mail("cesar@mail.com")
+					.apodo("ElMatador")
+					.liga("Bogota")
+					.ciudad("Bogota")
+					.description("nada")
+					.imagen(23)
+					.schedule(player.getSchedule())
+					.build();
+			Gson gson2 = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ss").create();
+			String json = gson2.toJson(tmp);
+			MvcResult result2 = this.mockMvc.perform(post("/player/updatePlayer")
+					//.header("Authorization", token)
+					.contentType(MediaType.APPLICATION_JSON)
+					.content(json)).andExpect(status().isOk())
+					.andReturn();
+			String rt2 = result2.getResponse().getContentAsString();
+			SuccessResponse response2 = gson2.fromJson(rt2,  SuccessResponse.class);
+			System.out.println(response2);
+			Player player1 = gson.fromJson(response2.getBody(), Player.class);
+			assertEquals("ElMatador", player1.getApodo());
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	@Test
+	@Order(46)
+	public void T54ActualizarLigaJugador(){
+		try{
+			MvcResult result = this.mockMvc.perform(get("/player/1")
+					//.header("Authorization", token)
+					.contentType(MediaType.APPLICATION_JSON)
+			).andExpect(status().isOk()).andReturn();
+			String rt = result.getResponse().getContentAsString();
+			Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ss").create();
+			SuccessResponse response = gson.fromJson(rt,  SuccessResponse.class);
+			Player player = gson.fromJson(response.getBody(), Player.class);
+
+			Player tmp = Player.builder()
+					.id("1")
+					.name("player prueba")
+					.mail("cesar@mail.com")
+					.apodo("ElMatador")
+					.liga("Antioquia")
+					.ciudad("Bogota")
+					.description("nada")
+					.imagen(23)
+					.schedule(player.getSchedule())
+					.build();
+			Gson gson2 = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ss").create();
+			String json = gson2.toJson(tmp);
+			MvcResult result2 = this.mockMvc.perform(post("/player/updatePlayer")
+					//.header("Authorization", token)
+					.contentType(MediaType.APPLICATION_JSON)
+					.content(json)).andExpect(status().isOk())
+					.andReturn();
+			String rt2 = result2.getResponse().getContentAsString();
+			SuccessResponse response2 = gson2.fromJson(rt2,  SuccessResponse.class);
+			System.out.println(response2);
+			Player player1 = gson.fromJson(response2.getBody(), Player.class);
+			assertEquals("Antioquia", player1.getLiga());
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	@Test
+	@Order(47)
+	public void T55ActualizarCiudadJugador(){
+		try{
+			MvcResult result = this.mockMvc.perform(get("/player/1")
+					//.header("Authorization", token)
+					.contentType(MediaType.APPLICATION_JSON)
+			).andExpect(status().isOk()).andReturn();
+			String rt = result.getResponse().getContentAsString();
+			Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ss").create();
+			SuccessResponse response = gson.fromJson(rt,  SuccessResponse.class);
+			Player player = gson.fromJson(response.getBody(), Player.class);
+
+			Player tmp = Player.builder()
+					.id("1")
+					.name("player prueba")
+					.mail("cesar@mail.com")
+					.apodo("ElMatador")
+					.liga("Antioquia")
+					.ciudad("Envigado")
+					.description("nada")
+					.imagen(23)
+					.schedule(player.getSchedule())
+					.build();
+			Gson gson2 = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ss").create();
+			String json = gson2.toJson(tmp);
+			MvcResult result2 = this.mockMvc.perform(post("/player/updatePlayer")
+					//.header("Authorization", token)
+					.contentType(MediaType.APPLICATION_JSON)
+					.content(json)).andExpect(status().isOk())
+					.andReturn();
+			String rt2 = result2.getResponse().getContentAsString();
+			SuccessResponse response2 = gson2.fromJson(rt2,  SuccessResponse.class);
+			System.out.println(response2);
+			Player player1 = gson.fromJson(response2.getBody(), Player.class);
+			assertEquals("Envigado", player1.getCiudad());
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	@Test
+	@Order(48)
+	public void T56ActualizarDescripcionJugador(){
+		try{
+			MvcResult result = this.mockMvc.perform(get("/player/1")
+					//.header("Authorization", token)
+					.contentType(MediaType.APPLICATION_JSON)
+			).andExpect(status().isOk()).andReturn();
+			String rt = result.getResponse().getContentAsString();
+			Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ss").create();
+			SuccessResponse response = gson.fromJson(rt,  SuccessResponse.class);
+			Player player = gson.fromJson(response.getBody(), Player.class);
+
+			Player tmp = Player.builder()
+					.id("1")
+					.name("player prueba")
+					.mail("cesar@mail.com")
+					.apodo("ElMatador")
+					.liga("Antioquia")
+					.ciudad("Envigado")
+					.description("Jugador rapido,con mucho espiritu de competitividad")
+					.imagen(23)
+					.schedule(player.getSchedule())
+					.build();
+			Gson gson2 = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ss").create();
+			String json = gson2.toJson(tmp);
+			MvcResult result2 = this.mockMvc.perform(post("/player/updatePlayer")
+					//.header("Authorization", token)
+					.contentType(MediaType.APPLICATION_JSON)
+					.content(json)).andExpect(status().isOk())
+					.andReturn();
+			String rt2 = result2.getResponse().getContentAsString();
+			SuccessResponse response2 = gson2.fromJson(rt2,  SuccessResponse.class);
+			System.out.println(response2);
+			Player player1 = gson.fromJson(response2.getBody(), Player.class);
+			assertEquals("Jugador rapido,con mucho espiritu de competitividad", player1.getDescription());
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	@Test
+	@Order(49)
+	public void T57ActualizarImagenJugador(){
+		try{
+			MvcResult result = this.mockMvc.perform(get("/player/1")
+					//.header("Authorization", token)
+					.contentType(MediaType.APPLICATION_JSON)
+			).andExpect(status().isOk()).andReturn();
+			String rt = result.getResponse().getContentAsString();
+			Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ss").create();
+			SuccessResponse response = gson.fromJson(rt,  SuccessResponse.class);
+			Player player = gson.fromJson(response.getBody(), Player.class);
+
+			Player tmp = Player.builder()
+					.id("1")
+					.name("player prueba")
+					.mail("cesar@mail.com")
+					.apodo("ElMatador")
+					.liga("Antioquia")
+					.ciudad("Envigado")
+					.description("Jugador rapido,con mucho espiritu de competitividad")
+					.imagen(25)
+					.schedule(player.getSchedule())
+					.build();
+			Gson gson2 = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ss").create();
+			String json = gson2.toJson(tmp);
+			MvcResult result2 = this.mockMvc.perform(post("/player/updatePlayer")
+					//.header("Authorization", token)
+					.contentType(MediaType.APPLICATION_JSON)
+					.content(json)).andExpect(status().isOk())
+					.andReturn();
+			String rt2 = result2.getResponse().getContentAsString();
+			SuccessResponse response2 = gson2.fromJson(rt2,  SuccessResponse.class);
+			System.out.println(response2);
+			Player player1 = gson.fromJson(response2.getBody(), Player.class);
+			assertEquals(Integer.valueOf(25), player1.getImagen());
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	@Test
+	@Order(50)
+	public void T58ActualizarJugadorError(){
+		try{
+			MvcResult result = this.mockMvc.perform(get("/player/1")
+					//.header("Authorization", token)
+					.contentType(MediaType.APPLICATION_JSON)
+			).andExpect(status().isOk()).andReturn();
+			String rt = result.getResponse().getContentAsString();
+			Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ss").create();
+			SuccessResponse response = gson.fromJson(rt,  SuccessResponse.class);
+			Player player = gson.fromJson(response.getBody(), Player.class);
+
+			Player tmp = Player.builder()
+					.id("1")
+					.name("player prueba")
+					.mail("cesar@mail.com")
+					.apodo("ElMatador")
+					.liga("Antioquia")
+					.ciudad("Envigado")
+					.imagen(25)
+					.schedule(player.getSchedule())
+					.build();
+			Gson gson2 = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ss").create();
+			String json = gson2.toJson(tmp);
+			MvcResult result2 = this.mockMvc.perform(post("/player/updatePlayer")
+					//.header("Authorization", token)
+					.contentType(MediaType.APPLICATION_JSON)
+					.content(json)).andExpect(status().isBadRequest())
+					.andReturn();
+			String rt2 = result2.getResponse().getContentAsString();
+			ExceptionResponse response2 = gson.fromJson(rt2,  ExceptionResponse.class);
+			assertEquals("Bad Request", response2.getError());
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 }
