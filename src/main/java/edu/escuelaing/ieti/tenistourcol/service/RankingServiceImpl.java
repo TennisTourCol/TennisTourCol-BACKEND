@@ -60,7 +60,7 @@ public class RankingServiceImpl implements RankingService{
                 }
             }return new SuccessResponse(new Date(), 200, "Se encontraron los jugadores", gson.toJson(jugadores));
         } else {
-            throw new NotFoundException("No se encontró ningún jugador con el id "+id);
+            throw new NotFoundException("No se encontró ningún ranking con el id "+id);
         }
     }
 }
