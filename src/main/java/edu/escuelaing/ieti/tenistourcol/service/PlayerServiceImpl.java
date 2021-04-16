@@ -78,6 +78,19 @@ public class PlayerServiceImpl implements PlayerService{
     }
 
     @Override
+    public Response updatePuntos(Player player) {
+        Optional<PlayerEntity> opt = playerRepository.findById(player.getId());
+        if(opt.isPresent()){
+            PlayerEntity playerEntity = opt.get();
+            playerEntity.setPuntos(player.getPuntos());
+            playerRepository.save(playerEntity);
+            return new SuccessResponse(new Date(), 200, "Se actualizó el puntaje del jugador " , gson.toJson(player));
+        }else{
+            throw new NotFoundException("No se encontró el jugador con el id"+player.getId());
+        }
+    }
+
+    @Override
     public Response getSchedule(String id) {
         Optional<PlayerEntity> optPlayer = playerRepository.findById(id);
         if(optPlayer.isPresent()) {
@@ -133,5 +146,6 @@ public class PlayerServiceImpl implements PlayerService{
             throw new NotFoundException("No se encontró ningún jugador con el id "+id);
         }
     }
+
 
 }
