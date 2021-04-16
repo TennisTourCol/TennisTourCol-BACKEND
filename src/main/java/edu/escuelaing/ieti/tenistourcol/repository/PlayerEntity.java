@@ -25,5 +25,6 @@ public class PlayerEntity {
         private String ciudad;
         private String description;
         private Integer imagen;
+        private String puntos;
         private List<String> schedule;
     }
