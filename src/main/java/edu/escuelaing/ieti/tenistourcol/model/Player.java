@@ -20,6 +20,7 @@ public class Player {
 
     @NotNull
     private String name, mail, apodo, liga, ciudad, description;
+    private String puntos;
 
     private List<String> schedule;
 
