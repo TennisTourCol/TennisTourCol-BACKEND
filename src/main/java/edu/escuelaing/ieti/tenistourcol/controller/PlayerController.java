@@ -53,5 +53,10 @@ public class PlayerController {
     public ResponseEntity<Response> updateInfoPlayer(@Valid @RequestBody Player player) {
         return ResponseEntity.ok(playerService.updatePlayerInfo(player));
     }
+    @PostMapping(value = "/updatePuntos")
+    public ResponseEntity<Response> updatePuntos(@Valid @RequestBody Player player) {
+        return ResponseEntity.ok(playerService.updatePuntos(player));
+    }
+
 
 }
