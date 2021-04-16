@@ -473,6 +473,7 @@ class TenisTourColApplicationTests {
 					.schedule(schedule)
 					.mail("prueba@gmail.com")
 					.imagen(new Integer(23))
+					.puntos("0")
 					.build();
 			Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ss").create();
 			String json = gson.toJson(player);
@@ -1106,6 +1107,7 @@ class TenisTourColApplicationTests {
 					.ciudad("Bogota")
 					.description("nada")
 					.imagen(23)
+					.puntos("100")
 					.schedule(player.getSchedule())
 					.build();
 			Gson gson2 = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ss").create();
@@ -1148,6 +1150,7 @@ class TenisTourColApplicationTests {
 					.ciudad("Bogota")
 					.description("nada")
 					.imagen(23)
+					.puntos("100")
 					.schedule(player.getSchedule())
 					.build();
 			Gson gson2 = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ss").create();
@@ -1189,6 +1192,7 @@ class TenisTourColApplicationTests {
 					.ciudad("Bogota")
 					.description("nada")
 					.imagen(23)
+					.puntos("100")
 					.schedule(player.getSchedule())
 					.build();
 			Gson gson2 = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ss").create();
@@ -1230,6 +1234,7 @@ class TenisTourColApplicationTests {
 					.ciudad("Envigado")
 					.description("nada")
 					.imagen(23)
+					.puntos("100")
 					.schedule(player.getSchedule())
 					.build();
 			Gson gson2 = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ss").create();
@@ -1271,6 +1276,7 @@ class TenisTourColApplicationTests {
 					.ciudad("Envigado")
 					.description("Jugador rapido,con mucho espiritu de competitividad")
 					.imagen(23)
+					.puntos("100")
 					.schedule(player.getSchedule())
 					.build();
 			Gson gson2 = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ss").create();
@@ -1312,6 +1318,7 @@ class TenisTourColApplicationTests {
 					.ciudad("Envigado")
 					.description("Jugador rapido,con mucho espiritu de competitividad")
 					.imagen(25)
+					.puntos("100")
 					.schedule(player.getSchedule())
 					.build();
 			Gson gson2 = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ss").create();
@@ -1656,6 +1663,73 @@ class TenisTourColApplicationTests {
 			Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ss").create();
 			ExceptionResponse response = gson.fromJson(rt,  ExceptionResponse.class);
 			assertEquals("Not Found", response.getError());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	@Test
+	@Order(65)
+	public void T65ActualizarPuntosJugador(){
+		try{
+			MvcResult result = this.mockMvc.perform(get("/player/1")
+					.contentType(MediaType.APPLICATION_JSON)
+			).andExpect(status().isOk()).andReturn();
+			String rt = result.getResponse().getContentAsString();
+			Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ss").create();
+			SuccessResponse response = gson.fromJson(rt,  SuccessResponse.class);
+			Player player = gson.fromJson(response.getBody(), Player.class);
+
+			Player tmp = Player.builder()
+					.id("1")
+					.name("player prueba")
+					.mail("cesar@mail.com")
+					.apodo("ElMatador")
+					.liga("Antioquia")
+					.ciudad("Envigado")
+					.description("Jugador rápido,con mucho espíritu de competitividad")
+					.imagen(23)
+					.puntos("1550")
+					.schedule(player.getSchedule())
+					.build();
+			Gson gson2 = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ss").create();
+			String json = gson2.toJson(tmp);
+			MvcResult result2 = this.mockMvc.perform(post("/player/updatePuntos")
+					.contentType(MediaType.APPLICATION_JSON)
+					.content(json)).andExpect(status().isOk())
+					.andReturn();
+			String rt2 = result2.getResponse().getContentAsString();
+			SuccessResponse response2 = gson2.fromJson(rt2,  SuccessResponse.class);
+			Player player1 = gson.fromJson(response2.getBody(), Player.class);
+			assertEquals("1550", player1.getPuntos());
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	@Test
+	@Order(66)
+	public void T66ActualizarPuntosNoEcuentraJugador() {
+		try {
+			Player tmp = Player.builder()
+					.id("2")
+					.name("player prueba")
+					.mail("cesar@mail.com")
+					.apodo("ElMatador")
+					.liga("Antioquia")
+					.ciudad("Envigado")
+					.description("Jugador rápido,con mucho espíritu de competitividad")
+					.imagen(23)
+					.puntos("1550")
+					.build();
+			Gson gson2 = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ss").create();
+			String json = gson2.toJson(tmp);
+			MvcResult result2 = this.mockMvc.perform(post("/player/updatePuntos")
+					.contentType(MediaType.APPLICATION_JSON)
+					.content(json)).andExpect(status().isNotFound())
+					.andReturn();
+			String rt2 = result2.getResponse().getContentAsString();
+			ExceptionResponse response2 = gson2.fromJson(rt2,  ExceptionResponse.class);
+			assertEquals("Not Found", response2.getError());
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
